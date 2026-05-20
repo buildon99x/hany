@@ -8,7 +8,7 @@ supersedes:
 
 # Phase Template — 피처 진행 중 사용
 
-피처 작업 진입 시 `docs/feat_{name}_phase.md` 로 복사. Gate Matrix 는 Phase 시작 시 1회 채움, Work Status 는 루프마다 갱신.
+피처 작업 진입 시 `docs/spec/{name}_phase.md` 로 복사. Gate Matrix 는 Phase 시작 시 1회 채움, Work Status 는 루프마다 갱신.
 
 > 핸드오프(PR/완료) 시점은 `HANDOFF_TEMPLATE.md` 사용.
 
@@ -88,7 +88,7 @@ supersedes:
 - Goal:
 - Current Step:
 - Current Zone: Design Zone / Execution Zone
-- Ledger Path: `docs/feat_{name}_harness_ledger.md` (또는 N/A)
+- Ledger Path: `docs/spec/{name}_harness_ledger.md` (또는 N/A)
 - Changed Files:
 - Commands Run:
 - Evidence:

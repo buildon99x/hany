@@ -81,7 +81,7 @@ supersedes:
 
 ## 10. Retrospective Trigger (Medium+ 의무)
 
-Medium 이상 티어는 본 핸드오프와 별도로 `docs/feat_{feat-name}_harness_retrospective.md` 작성. 본 §10 은 회고 트리거 체크리스트 — 작성 완료 후 본 표를 채워 PR 에 첨부.
+Medium 이상 티어는 본 핸드오프와 별도로 `docs/spec/{feat-name}_harness_retrospective.md` 작성. 본 §10 은 회고 트리거 체크리스트 — 작성 완료 후 본 표를 채워 PR 에 첨부.
 
 | 회고 섹션 | 작성 완료 | 핵심 발견 (1줄) |
 |---|---|---|

@@ -36,10 +36,10 @@ ADR 0008 References에 활성 일자 추가 후 auto-merge 활성 가능.
 
 ### 0-3. 동시성 1 사이클 검증 (C9)
 
-`docs/feat_*_harness_ledger.md` 파일 중 Phase Status 가 `🔄 진행 중` 인 것이 존재하면 dispatcher 차단:
+`docs/spec/*_harness_ledger.md` 파일 중 Phase Status 가 `🔄 진행 중` 인 것이 존재하면 dispatcher 차단:
 
 ```
-ABORT: 다른 harness 사이클 진행 중 (ledger: docs/feat_X_harness_ledger.md). 완료 후 재실행.
+ABORT: 다른 harness 사이클 진행 중 (ledger: docs/spec/X_harness_ledger.md). 완료 후 재실행.
 ```
 
 ### 0-4. hook 활성 자가 검증 (S6)
@@ -145,13 +145,13 @@ list 응답 본문 크기 > 1000자이면 `issue_read` 로 개별 조회.
 ### 3-1. 자율 구현 신호 확인 (C13)
 
 이슈에 `harness:auto-implement-ok` 라벨 또는 frontmatter `autonomous: true` 없으면  
-→ Stage 산출 (`docs/feat_{feat-name}_s*.md`) 까지만 수행, 구현 진입 금지.
+→ Stage 산출 (`docs/spec/{feat-name}_s*.md`) 까지만 수행, 구현 진입 금지.
 
 ### 3-2. harness-entry Readiness Validation 코드 패턴 재구현
 
 슬래시 호출 금지 (C11). 아래 조건을 직접 검증:
-- `docs/feat_{feat-name}_s1.md` 존재 + Context Carry ≥2 결정
-- `docs/feat_{feat-name}_s2.md` 존재 + 모든 Phase 6필드 완비
+- `docs/spec/{feat-name}_s1.md` 존재 + Context Carry ≥2 결정
+- `docs/spec/{feat-name}_s2.md` 존재 + 모든 Phase 6필드 완비
 - Medium+ tier: ATK 의무 답변 (Medium = 2개, High = 4개)
 - **(advisory — design-rule.md §6 Footnote 2)** s1 §영향 파일 표 `file:line` 인용 grep — 누락 시 `[s1-grep-trigger]` 태그 ledger 기록 후 진행 (차단 아님)
 - **(advisory — design-rule.md §6 Footnote 2)** s2 Phase Contract 인수조건 줄 `[verify:]` 태그 grep — 누락 시 `[verify-tag-trigger]` 태그 ledger 기록 후 진행
@@ -164,9 +164,9 @@ list 응답 본문 크기 > 1000자이면 `issue_read` 로 개별 조회.
 
 | 라벨 | 동작 |
 |---|---|
-| `harness:stage-0` | `docs/feat_{feat-name}_s0.md` Write (Stage 0 아이데이션) |
-| `harness:stage-1` | `docs/feat_{feat-name}_s1.md` Write (Stage 1 스펙) |
-| `harness:stage-2` | `docs/feat_{feat-name}_s2.md` Write (Stage 2 구현 계획) |
+| `harness:stage-0` | `docs/spec/{feat-name}_s0.md` Write (Stage 0 아이데이션) |
+| `harness:stage-1` | `docs/spec/{feat-name}_s1.md` Write (Stage 1 스펙) |
+| `harness:stage-2` | `docs/spec/{feat-name}_s2.md` Write (Stage 2 구현 계획) |
 | `harness:harness` | Orchestration Loop 룰 코드 패턴 재구현, ledger commit 번들 |
 | `harness:frontend` or frontend path 매치 | `frontend-design` 스킬 결과 통합 |
 
@@ -323,7 +323,7 @@ SLA 14일 무응답 → 자동 close + 다음 점검 이슈 발행 (C8).
 
 ## §10 Staged Mode (`--staged` 플래그)
 
-`/harness-loop --staged` 는 단일 이슈를 **Stage 1 → Stage 2 → Implementation 3단계** 자율 진행한다. default 는 off — 기존 1-issue=1-PR 흐름 유지. Stage 0 은 사람 `/stage-start 0` 영역 (CC-19). 자세한 컨셉·CC·엣지케이스는 `docs/feat_harness-loop-staged_s1.md`.
+`/harness-loop --staged` 는 단일 이슈를 **Stage 1 → Stage 2 → Implementation 3단계** 자율 진행한다. default 는 off — 기존 1-issue=1-PR 흐름 유지. Stage 0 은 사람 `/stage-start 0` 영역 (CC-19). 자세한 컨셉·CC·엣지케이스는 `docs/spec/harness-loop-staged_s1.md`.
 
 ### §10-1 Router 진입
 
@@ -345,8 +345,8 @@ SLA 14일 무응답 → 자동 close + 다음 점검 이슈 발행 (C8).
 
 | Stage | 작업 | 산출물 | review | sub-issue (stage 종료마다 1개) |
 |---|---|---|---|---|
-| 1 | Spec 작성 (Context Carry ≥2, ATK, 영향 파일 표 전제조건 열, **`file:line` 인용 컬럼 advisory**, **ATK 매핑표 5종 advisory** — §6 Footnote 2) | `docs/feat_*_s1.md` | Gemini `review_plan` 1차 + escalation (CC-3) | "Stage 1 완료 + review N회" |
-| 2 | Plan 작성 (Phase Contract 6필드, Risk Register, **각 인수조건 `[verify:]` 9종 태그 advisory** — §6 Footnote 2) | `docs/feat_*_s2.md` | Gemini `review_plan` 1차 + escalation | "Stage 2 완료 + review N회" |
+| 1 | Spec 작성 (Context Carry ≥2, ATK, 영향 파일 표 전제조건 열, **`file:line` 인용 컬럼 advisory**, **ATK 매핑표 5종 advisory** — §6 Footnote 2) | `docs/spec/*_s1.md` | Gemini `review_plan` 1차 + escalation (CC-3) | "Stage 1 완료 + review N회" |
+| 2 | Plan 작성 (Phase Contract 6필드, Risk Register, **각 인수조건 `[verify:]` 9종 태그 advisory** — §6 Footnote 2) | `docs/spec/*_s2.md` | Gemini `review_plan` 1차 + escalation | "Stage 2 완료 + review N회" |
 | Impl | Phase A~ 전체 자율 (CC-5/Q6 (b)) + tests + clippy/tsc | source 변경 + Phase 별 commit | tests/clippy/tsc (review 미적용) | "구현 완료 + PR #M" |
 
 각 stage 작업은 sub-agent (general-purpose) 위임 — 메인 context = 회신 30줄 보존 (T-1).

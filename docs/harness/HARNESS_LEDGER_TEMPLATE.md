@@ -5,7 +5,7 @@ portability: portable
 
 # Decision Ledger Template
 
-> 사용법: `/harness-start {feat-name}` 진입 시 본 템플릿을 `docs/feat_{feat-name}_harness_ledger.md` 로 복사·초기화.
+> 사용법: `/harness-start {feat-name}` 진입 시 본 템플릿을 `docs/spec/{feat-name}_harness_ledger.md` 로 복사·초기화.
 > 본 템플릿은 신규 ledger 에만 적용. 기존 ledger 는 비파괴 (수동 마이그레이션 시에만 sentinel 영역 삽입).
 > 갱신은 항상 해당 Phase 커밋과 번들. 단독 커밋 금지.
 
@@ -74,4 +74,4 @@ portability: portable
 - Phase 커밋 메시지 본문 마지막 줄에 `Ledger: Phase {N} ✅ 완료, decision #{x}, escalation #{y}, scope #{z}` 1줄 요약.
 - Ledger 갱신만 있는 단독 커밋 금지. 항상 Phase 산출물과 동일 커밋.
 - Effort Ledger 자동 갱신도 Phase 커밋에 번들 — ledger 만 amend 금지.
-- 모든 Phase ✅ 완료 후 `docs/feat_{feat-name}_harness_retrospective.md` 작성 → Effort 분석 섹션 포함 → 마지막 Phase 커밋과 번들 (Playbook Step 7).
+- 모든 Phase ✅ 완료 후 `docs/spec/{feat-name}_harness_retrospective.md` 작성 → Effort 분석 섹션 포함 → 마지막 Phase 커밋과 번들 (Playbook Step 7).

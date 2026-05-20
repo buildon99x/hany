@@ -9,16 +9,16 @@ Activated by `/harness-start {feat-name}` or when harness execution needs to beg
 
 ## Path Conventions
 
-- Decision Ledger: `docs/feat_{feat-name}_harness_ledger.md` (runtime artifact; created on first `/harness-start`, bundled into Phase commits, never separately committed).
-- Retrospective: `docs/feat_{feat-name}_harness_retrospective.md` (post-orchestration artifact; written after all Phases reach ✅ 완료, bundled with the last Phase commit).
+- Decision Ledger: `docs/spec/{feat-name}_harness_ledger.md` (runtime artifact; created on first `/harness-start`, bundled into Phase commits, never separately committed).
+- Retrospective: `docs/spec/{feat-name}_harness_retrospective.md` (post-orchestration artifact; written after all Phases reach ✅ 완료, bundled with the last Phase commit).
 - Both files live under `docs/` so they are git-tracked alongside the feature s1/s2 documents.
 
 ## Readiness Validation
 
 Before any Phase execution, verify:
 
-1. `docs/feat_{feat-name}_s1.md` exists and contains a `Context Carry` section with **≥2 decision entries** (s1 Q6 — aligned with the rule and Quality Oracle minimum).
-2. `docs/feat_{feat-name}_s2.md` exists and all Phase blocks contain the 6 required fields: 전제조건 / 인수조건 / 루프예산 / 롤백 / 서브에이전트 스코프 / 에스컬레이트 조건.
+1. `docs/spec/{feat-name}_s1.md` exists and contains a `Context Carry` section with **≥2 decision entries** (s1 Q6 — aligned with the rule and Quality Oracle minimum).
+2. `docs/spec/{feat-name}_s2.md` exists and all Phase blocks contain the 6 required fields: 전제조건 / 인수조건 / 루프예산 / 롤백 / 서브에이전트 스코프 / 에스컬레이트 조건.
 3. For Medium+ tier features: ATK section present in s1 with the obligatory answers (Medium = 인접 불변·이전 실패 의무 2 + 비명시 제약·MVP 경계 권장 2; High = 4 전체 의무). Answers in the form '해당 없음 + 이유' count as complete; bare '해당 없음' without a stated reason counts as missing.
 4. **(advisory — design-rule.md §6 Footnote 2)** s1 §영향 파일 표에 `file:line` 인용 컬럼이 채워져 있는지 grep. 정규식: `` `[^`]+:(\d+|new|multi|extern[^`]*)` ``. 누락 시 ledger Decision Log에 `[s1-grep-trigger]` 태그 기록 후 진행(차단 아님 — 30일 advisory).
 5. **(advisory — design-rule.md §6 Footnote 2)** s2 각 Phase Contract 인수조건 줄에 `[verify:]` 태그가 있는지 grep. 정규식: `\[verify: [a-z+]+(?:\+[a-z]+)*\]`. 누락 시 `[verify-tag-trigger]` 태그 기록 후 진행.
@@ -27,7 +27,7 @@ If any check 1~3 fails, report the specific missing item and stop. Items 4·5 ar
 
 ## Ledger Initialize / Resume
 
-- If `docs/feat_{feat-name}_harness_ledger.md` does not exist → create it from `docs/harness/HARNESS_LEDGER_TEMPLATE.md`, populating Phase Status rows from s2 Phase blocks (all 🔲 미시작) and keeping the empty Effort Ledger `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` sentinel region intact for later auto-append. Other tables (Decision / Escalation / Scope Discovery / Loop Budget) start empty.
+- If `docs/spec/{feat-name}_harness_ledger.md` does not exist → create it from `docs/harness/HARNESS_LEDGER_TEMPLATE.md`, populating Phase Status rows from s2 Phase blocks (all 🔲 미시작) and keeping the empty Effort Ledger `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` sentinel region intact for later auto-append. Other tables (Decision / Escalation / Scope Discovery / Loop Budget) start empty.
 - If Ledger exists → read current Phase Status table. Resume from the first Phase that is not ✅ 완료.
 
 ## Orchestration Loop
@@ -47,7 +47,7 @@ For each Phase (in order, starting from first incomplete):
    - Bundle Ledger update into Phase commit (no separate Ledger commit).
 5. If 루프예산 exceeded before 인수조건 met → stop, record in Escalation Log, ask user.
 
-After the final Phase reaches ✅ 완료, prompt the operator to write `docs/feat_{feat-name}_harness_retrospective.md` from `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` and bundle it with the last Phase commit (Playbook Step 7).
+After the final Phase reaches ✅ 완료, prompt the operator to write `docs/spec/{feat-name}_harness_retrospective.md` from `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` and bundle it with the last Phase commit (Playbook Step 7).
 
 ## Scope Discovery Protocol
 

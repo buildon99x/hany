@@ -14,7 +14,7 @@ deprecated: see PHASE_TEMPLATE.md (§8)
 - Goal:
 - Current Step:
 - Current Zone: Design Zone / Execution Zone
-- Ledger Path: `docs/feat_{name}_harness_ledger.md` (또는 N/A)
+- Ledger Path: `docs/spec/{name}_harness_ledger.md` (또는 N/A)
 - Changed Files:
 - Commands Run:
 - Evidence:

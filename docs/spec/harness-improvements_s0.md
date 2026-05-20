@@ -1,3 +1,10 @@
+---
+kind: feat
+name: harness-improvements
+stage: 0
+status: active
+---
+
 # Harness Improvements — Stage 0 Ideation
 
 > 이전 Stage 문서: 해당 없음 (신규)

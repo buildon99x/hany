@@ -5,7 +5,7 @@
 
 ## 1. 목적
 - 복잡한 기능을 "아이데이션 → 기능 설계 → 구현 계획"의 3단계로 나누어 일관된 포맷으로 기록한다.
-- 각 단계 산출물을 `docs/feat_{feat-name}_s{N}.md` 로 저장해 리뷰·롤백이 가능하도록 한다.
+- 각 단계 산출물을 `docs/spec/{feat-name}_s{N}.md` 로 저장해 리뷰·롤백이 가능하도록 한다.
 - `CLAUDE.md`의 기존 "Planning Rules"(코드 금지, 1~2줄 요약)를 Stage 1·2의 하위 규칙으로 흡수한다.
 
 ## 2. 트리거
@@ -36,7 +36,7 @@
 ### Stage 0 — Ideation
 - 자유 브레인스토밍. 방향·목표·제약을 탐색.
 - 결론을 강제하지 않는다. 사용자가 "좁혀줘"라고 요청하기 전까지는 옵션을 열어둔다.
-- 산출물 저장은 선택. 저장 시 경로는 `docs/feat_{feat-name}_s0.md` 를 사용한다(헤더·저장 절차는 §5 동일 적용).
+- 산출물 저장은 선택. 저장 시 경로는 `docs/spec/{feat-name}_s0.md` 를 사용한다(헤더·저장 절차는 §5 동일 적용).
 - **컨텍스트 예산**: 소스 파일 직접 읽기 금지. 코드베이스 정보가 필요하면 Codebase State Summary 서브에이전트에 위임.
 
 ### Stage 1 — Feature Specification
@@ -96,7 +96,7 @@ Phase Contract 인수조건 **첫 항목 표준 1줄** (Medium+ advisory, §6 �
 ### 4.1 이전 Stage 문서 자동 복원(resume)
 Stage 진입 시(=`stage-start N`) 다음 절차를 수행한다.
 
-1. `docs/feat_{feat-name}_s{N}.md` 존재 시 → 한 줄 알림 후 **기본은 이어쓰기**로 즉시 plan-mode 작업을 시작한다(수락 확인 생략, §4.3). 새로 시작 / 덮어쓰기는 사용자가 명시 요청 시에만 적용하고, 최종 충돌 처리는 `/stage-end` 의 §5.3 덮어쓰기 가드에 위임한다.
+1. `docs/spec/{feat-name}_s{N}.md` 존재 시 → 한 줄 알림 후 **기본은 이어쓰기**로 즉시 plan-mode 작업을 시작한다(수락 확인 생략, §4.3). 새로 시작 / 덮어쓰기는 사용자가 명시 요청 시에만 적용하고, 최종 충돌 처리는 `/stage-end` 의 §5.3 덮어쓰기 가드에 위임한다.
 2. `N >= 1` 이면 이전 Stage 문서(`_s{N-1}.md`, …, `_s0.md` 순서로 가장 가까운 것)를 `Read` 로 로드해 컨텍스트를 복원한다. 없으면 한 줄로 알리고 기본 진행한다(진행 여부 재확인 생략).
 3. `N == 2` 이고 `_s1.md` 가 존재하지 않으면 **경고 한 줄**을 남긴다. 이는 차단 게이트가 아니며, 최종 수락은 `/stage-end` 의 §5.2 게이트에서 받는다.
 
@@ -120,7 +120,7 @@ Stage 진입 시(=`stage-start N`) 다음 절차를 수행한다.
 - 실제 코드 수정이 필요한 다른 슬래시 커맨드(`/release-*` 등) 호출.
 
 **전환 절차**
-1. 전환 트리거 감지 직후, 메인 에이전트는 한 줄로 모드 전환 사실과 다음에 수행할 쓰기 동작을 사용자에게 명시한다(예: "편집 모드 전환 → `docs/feat_{name}_s{N}.md` Write").
+1. 전환 트리거 감지 직후, 메인 에이전트는 한 줄로 모드 전환 사실과 다음에 수행할 쓰기 동작을 사용자에게 명시한다(예: "편집 모드 전환 → `docs/spec/{name}_s{N}.md` Write").
 2. 의도와 다른 트리거(예: 사용자가 단지 "거의 다 됐네"라고 답한 경우)는 전환하지 않고 재확인한다.
 3. 편집 모드 동안에도 §5.4 저장·커밋·푸시 규칙(특히 push 자동 금지)은 그대로 적용된다.
 
@@ -138,7 +138,7 @@ Stage 진입 시(=`stage-start N`) 다음 절차를 수행한다.
 
 **구현 작업 범위 — 명시 요청 한정**
 - 계획 모드에서 plan 이 사용자 승인을 받았다 하더라도, 그리고 `/stage-end` 가 호출되었다 하더라도, 그것은 **"산출 문서를 저장해도 좋다"는 신호일 뿐 "이 plan 을 지금 코드로 구현하라"는 신호는 아니다**. Stage 작업 종료 = 구현 시작이 아니다.
-- `/stage-end` 가 트리거하는 편집 모드의 범위는 §5.4 절차에 한정된다: **Stage 산출 문서(`docs/feat_{name}_s{N}.md`)의 Write·`git add`·commit 만** 수행한다. 산출 문서가 기술하는 **소스 코드(`src/**`, `src-tauri/**` 등) 변경, 새 파일 생성, 의존성 추가, 빌드·테스트 실행은 일절 시작하지 않는다**.
+- `/stage-end` 가 트리거하는 편집 모드의 범위는 §5.4 절차에 한정된다: **Stage 산출 문서(`docs/spec/{name}_s{N}.md`)의 Write·`git add`·commit 만** 수행한다. 산출 문서가 기술하는 **소스 코드(`src/**`, `src-tauri/**` 등) 변경, 새 파일 생성, 의존성 추가, 빌드·테스트 실행은 일절 시작하지 않는다**.
 - 코드 구현은 사용자의 별도 **명시 요청** 이 있을 때만 진입한다. 예시 트리거:
   - "이제 구현 시작" / "Phase A 작성해줘" / "코드 작성 시작" 등 명시 명령.
   - 슬래시 커맨드: `/harness-start {feat-name}` (Medium+ 피처 권장 진입점).
@@ -148,10 +148,11 @@ Stage 진입 시(=`stage-start N`) 다음 절차를 수행한다.
 ## 5. 저장 규칙
 
 ### 5.1 경로·헤더
-- 경로: `docs/feat_{feat-name}_s{N}.md` (Stage 0~2 공통).
+- 경로: `docs/spec/{feat-name}_s{N}.md` (Stage 0~2 공통).
 - `{feat-name}` = kebab-case. 예: `fever-time`, `new-skill-fevertime`, `rebirth-v2`.
+- frontmatter 표준: `kind: feat|fix`, `name: {feat-name}`, `stage: {N}`, `status: active|complete|archived`
 - 헤더: `# {Feature} — Stage {N} {title}`.
-- 서두에 이전 Stage 참조 한 줄(예: `> Stage 0 문서: docs/feat_fever-time_s0.md` 또는 "해당 없음").
+- 서두에 이전 Stage 참조 한 줄(예: `> Stage 0 문서: docs/spec/fever-time_s0.md` 또는 "해당 없음").
 
 ### 5.2 종료 직전 게이트(체크리스트 합의)
 Stage 1·2 종료 시 다음을 강제한다.
@@ -171,12 +172,12 @@ Stage 1·2 종료 시 다음을 강제한다.
 1. 사용자 승인 후 문서 저장.
    - **Stage 1·2 산출물(또는 예상 100줄 이상의 모든 Stage 문서)은 서브에이전트(general-purpose)에 위임해 작성한다.** 대용량 단일 `Write` 가 메인 스트림 유휴 시간을 늘려 `Stream idle timeout - partial response received` 오류를 유발하므로, 무거운 출력은 서브에이전트의 별도 스트림으로 격리한다.
    - 위임 절차:
-     1. 메인 에이전트는 합의된 산출물 본문 **전체** 와 대상 절대경로(`docs/feat_{feat-name}_s{N}.md`)를 프롬프트에 그대로 담아 서브에이전트를 호출한다(서브에이전트는 대화 맥락을 모르므로 누락 시 결과 오염).
+     1. 메인 에이전트는 합의된 산출물 본문 **전체** 와 대상 절대경로(`docs/spec/{feat-name}_s{N}.md`)를 프롬프트에 그대로 담아 서브에이전트를 호출한다(서브에이전트는 대화 맥락을 모르므로 누락 시 결과 오염).
      2. 서브에이전트는 단일 `Write` 만 수행하고, 결과로 (a) 저장 경로 (b) 줄 수 (c) 첫 헤더 한 줄 만 회신.
      3. 메인 에이전트는 회신값 검증 + 대상 파일 첫 ~30줄을 `Read` 로 확인(헤더·이전 Stage 참조·필수 섹션 존재).
      4. 검증 실패 시 메인 에이전트가 직접 `Write` 로 재작성(루프예산 1회).
    - Stage 0 또는 100줄 미만의 짧은 문서는 메인 에이전트의 직접 `Write` 를 허용한다.
-2. 저장 직후 같은 문서 파일만 스테이징(`git add docs/feat_{feat-name}_s{N}.md`)하고, 커밋 메시지 `docs({feat-name}): Stage {N} {title}` 형식으로 `git commit` 실행.
+2. 저장 직후 같은 문서 파일만 스테이징(`git add docs/spec/{feat-name}_s{N}.md`)하고, 커밋 메시지 `docs({feat-name}): Stage {N} {title}` 형식으로 `git commit` 실행.
 3. 커밋 성공 후 `/compact` 를 호출해 세션 컨텍스트를 압축한다. 직접 슬래시 호출이 불가능한 환경이면 마지막 응답에 `/compact` 실행 요청을 명시.
 - 사용자가 "커밋하지 마" 등 명시적으로 거부하면 위 2·3단계를 건너뛴다.
 - **푸시는 여전히 사용자 명시 요청 시에만** 수행(CLAUDE.md git safety protocol 준수). 자동 push 금지.
@@ -216,7 +217,7 @@ Stage 1·2 종료 시 다음을 강제한다.
 
 - **발효일**: `<merge-commit-iso8601>` (미발효 — placeholder 상태. 본 PR 머지 commit hash ISO8601 시각, 머지 후 footnote 1줄 follow-up commit 으로 채움). 발효일 이후 신규 Medium+ feature 부터 §3 작업 규모 추정 + §3 Phase Contract 인수조건 표준 1줄 + §5.4 위임 1줄 의무. **Low 면제. High 티어는 본 룰 면제 ≠ High 자체 의무 면제** (의무 산출물 표 §3 그대로 유지).
 - **Advisory 운영 30일**: Quality Oracle / Harness Readiness Oracle 가 본 룰을 경고로만 노출 — 차단 게이트 아님.
-- **발동 카운트 측정**: ledger 발동 키워드 `[work-slicing-trigger]` 태그를 `git log -- 'docs/feat_*_harness_ledger.md'` + working tree `grep -r '\[work-slicing-trigger\]' docs/` 병행 수집(미커밋 ledger 누락 회피).
+- **발동 카운트 측정**: ledger 발동 키워드 `[work-slicing-trigger]` 태그를 `git log -- 'docs/spec/*_harness_ledger.md'` + working tree `grep -r '\[work-slicing-trigger\]' docs/` 병행 수집(미커밋 ledger 누락 회피).
 - **발효일 +30일 시점 분기**: 발동 ≥ 3건 + 사용자 명시 escalate 시 차단 게이트 승격 가능 — Stage 1 재진입을 통해서만(즉시 본문 변경 금지). 발동 0 또는 escalate 부재 시 **auto-expire = 룰 본문 4지점(§3 작업 규모 추정 sub절 / §3 Phase Contract 인수조건 표준 / §5.4 위임 1줄 / 본 §6) 수동 제거 + 검증 issue 수동 생성** (자동화 헬퍼 0).
 - **부분 폐기 PR 가능** — 그 경우 auto-expire 시점 reset 없음, 머지 일자 유지.
 - **30일 freeze 권장** (advisory · 차단 게이트 아님): 본 PR 머지 후 design-rule.md 추가 룰 변경 지양. "룰 9일 5회 변경" 안티패턴 재발 방지.
@@ -232,7 +233,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - **C5** `.claude/skills/harness-entry/SKILL.md` Readiness Validation — s1 `file:line` 인용 grep + s2 `[verify:]` 태그 grep advisory.
   - **C6** `.claude/skills/privacy-by-design/SKILL.md` Required Checks — 외부 출력 표면 9종 체크리스트 advisory.
 - **Advisory 운영 30일**: 본 6게이트는 경고만, 차단 아님. Quality Oracle / Harness Readiness Oracle / staged 워커 모두 advisory 모드.
-- **발동 카운트 측정**: ledger 발동 태그 3종 — `[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`. 측정: `git log -- 'docs/feat_*_harness_ledger.md'` + working tree `grep -r '\[(s1-grep|verify-tag|privacy-surface)-trigger\]' docs/` 병행.
+- **발동 카운트 측정**: ledger 발동 태그 3종 — `[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`. 측정: `git log -- 'docs/spec/*_harness_ledger.md'` + working tree `grep -r '\[(s1-grep|verify-tag|privacy-surface)-trigger\]' docs/` 병행.
 - **발효일 +30일 시점 분기**:
   - 발동 ≥ 3 + 사용자 명시 escalate → 차단 게이트 승격 가능 (Stage 1 재진입 필수, 즉시 본문 변경 금지).
   - 발동 0 → **auto-expire**: 룰 본문 6지점(§3 의무 산출물 표 3행 · §3 Stage 2 사전 `[T]` 추정 · §5.4 OR 4중 · 본 §6 Footnote 2) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
@@ -248,7 +249,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - **E1** 위임 완료 직후 ledger `## Subagent Invocations` 1행 기입. 미수신값 `unknown`.
   - **Privacy scrub** ledger `task` / footer 작성 시 user dir 절대경로·원문 입력·토큰 노출 금지.
 - **Advisory 운영 30일**: 본 3게이트는 경고만, 차단 아님. Quality Oracle / Harness Readiness Oracle / staged 워커 모두 advisory 모드.
-- **발동 카운트 측정**: ledger 발동 태그 3종 — `[subagent-verify-trigger]` · `[subagent-metrics-trigger]` · `[subagent-privacy-trigger]`. 측정: `git log -- 'docs/feat_*_harness_ledger.md'` + working tree `grep -rE '\[subagent-(verify|metrics|privacy)-trigger\]' docs/` 병행.
+- **발동 카운트 측정**: ledger 발동 태그 3종 — `[subagent-verify-trigger]` · `[subagent-metrics-trigger]` · `[subagent-privacy-trigger]`. 측정: `git log -- 'docs/spec/*_harness_ledger.md'` + working tree `grep -rE '\[subagent-(verify|metrics|privacy)-trigger\]' docs/` 병행.
 - **발효일 +30일 시점 분기**:
   - 발동 ≥ 3 + 사용자 명시 escalate → 차단 게이트 승격 가능 (Stage 1 재진입 필수, 즉시 본문 변경 금지).
   - 발동 0 → **auto-expire**: 룰 본문 5지점(§5.4 A2 / §5.4 E1 / §5.4 Privacy scrub / 본 §6 Footnote 3 / HARNESS_LEDGER_TEMPLATE.md `## Subagent Invocations` 섹션) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).

@@ -44,7 +44,7 @@ Only aggregate activity signals are allowed:
 | 5 | 텔레메트리·메트릭 (집계 카운터·gauge·히스토그램) | aggregate-only invariant + 수동 |
 | 6 | GitHub Issue / PR 본문 (Producer/Reporter) | sanitize.mjs (fallback issue body 포함) |
 | 7 | GitHub Comment / Review (PR 코멘트·리뷰 본문) | sanitize.mjs + pr-review-fix |
-| 8 | Retrospective / Lesson 문서 (`docs/learn/` · `docs/feat_*_retrospective.md`) | learn-record skill + 수동 |
+| 8 | Retrospective / Lesson 문서 (`docs/learn/` · `docs/spec/*_retrospective.md`) | learn-record skill + 수동 |
 | 9 | Simulate-User report (`docs/sim_*.md`) | simulate-user skill 본문 가이드 |
 
 Cross-ref: `pr-review-fix`, `learn-record`, `simulate-user` 스킬은 본 9종 체크리스트를 단일 출처로 참조한다.

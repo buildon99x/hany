@@ -13,7 +13,7 @@ Use this playbook for every feature or harness change. It turns the plan into a 
 
 Medium+ 피처는 구현 단계 진입 전 `/harness-start {feat-name}` 을 실행한다.
 
-- `docs/feat_{feat-name}_s1.md` + `_s2.md` 존재 및 Readiness Validation 통과 확인 (`.claude/skills/harness-entry/SKILL.md` 참조).
+- `docs/spec/{feat-name}_s1.md` + `_s2.md` 존재 및 Readiness Validation 통과 확인 (`.claude/skills/harness-entry/SKILL.md` 참조).
 - Validation 실패 시 누락 항목을 해소한 뒤 재실행. 통과 전까지 Phase 실행 불가.
 - Low 티어는 Step 0 생략, Step 1로 바로 진입.
 
@@ -60,7 +60,7 @@ Medium+ 피처는 구현 단계 진입 전 `/harness-start {feat-name}` 을 실�
 - `npm run lint:css` 위반 0 (CSS 변경 시 — advisory 단계에서도 핸드오프 전 확인).
 
 ## 7. Retrospective (Medium+ 피처)
-- Harness Phase 전체 완료 후 `docs/feat_{feat-name}_harness_retrospective.md` 를 `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` 기반으로 작성.
+- Harness Phase 전체 완료 후 `docs/spec/{feat-name}_harness_retrospective.md` 를 `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` 기반으로 작성.
 - 기록 내용: 즉흥 결정 목록 / 누락된 ATK 항목 / Phase Contract 공백 / 루프예산 사용량 / 인수조건 충족도 / Scope Discovery 충돌 / **Effort 분석 (Effort Ledger 마킹 대상 Phase 의 요인 카테고리 6종 + follow-up)** / 다음 s1 템플릿 개선 제안.
 - Retrospective 파일을 Decision Ledger 최종 커밋과 함께 번들.
 - Low 티어는 Step 7 생략.

@@ -18,8 +18,8 @@ portability: project-specific
 
 | # | Phase | 상태 | 커밋 | 비고 |
 |---|---|---|---|---|
-| 1 | A — Hook 경로 패턴 변경 | ✅ 완료 | pending | |
-| 2 | B — 문서 4중 동기 + 마이그레이션 | 🔲 미시작 | — | |
+| 1 | A — Hook 경로 패턴 변경 | ✅ 완료 | 970ccc3 | |
+| 2 | B — 문서 4중 동기 + 마이그레이션 | ✅ 완료 | pending | |
 
 상태 기호: 🔲 미시작 · 🟡 진행 · ⏸ 보류(에스컬레이션) · ✅ 완료 · ⚠️ 회귀.
 
@@ -51,6 +51,7 @@ portability: project-specific
 | Date | Phase | Agent ID | task | duration_ms | total_tokens | tool_uses | status |
 |---|---|---|---|---|---|---|---|
 | 2026-05-20 | A | a450e5282f012c01a | update hook path patterns docs/feat_* → docs/spec/* + test cases | 218525 | 37123 | 50 | DONE |
+| 2026-05-20 | B | aab85df93fe5bb5ea | 4중 동기 docs/harness + design-rule + commands + skills path update | 207525 | 62499 | 54 | DONE |
 
 ## Effort Ledger
 
