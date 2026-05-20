@@ -14,8 +14,6 @@ dist-ssr
 .eslintcache
 .stylelintcache
 
-release-staging
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -26,13 +24,12 @@ release-staging
 *.njsproj
 *.sln
 *.sw?
+.env
 
 # Local secrets — never commit
-.claude/.gemini-key
-.claude/worktree/*
 .claude/worktrees/*
+.claude/setting.local.json
 
 # Local-build release pipeline staging area (scripts/release-local.mjs)
-release-staging/
 tmp
-.claude/worktree/gallery-archive-ui-improve
+
