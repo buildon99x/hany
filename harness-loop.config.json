@@ -1,0 +1,104 @@
+{
+  "loop_budget": {
+    "auto_fix_retries_max": 3,
+    "no_change_reruns_max": 2,
+    "self_maintenance_edits_max": 5,
+    "self_maintenance_window_days": 9
+  },
+  "required_docs": [
+    "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
+    "docs/harness/FEATURE_DIFFICULTY_TIERS.md",
+    "docs/harness/QUALITY_GATE_MATRIX.md",
+    "docs/harness/FEATURE_QUALITY_NOTE_TEMPLATE.md",
+    "docs/harness/FEATURE_REVIEW_CHECKLIST.md"
+  ],
+  "strict_mode_default": false,
+  "caps": {
+    "iteration_per_cycle": 20,
+    "token_per_cycle": 200000,
+    "usd_per_cycle": 2.0,
+    "usd_per_day": 20.0
+  },
+  "model_pricing": {
+    "claude-opus-4-7": {
+      "input_per_mtok": 15,
+      "output_per_mtok": 75,
+      "cache_read_per_mtok": 1.5,
+      "cache_write_5m_per_mtok": 18.75,
+      "cache_write_1h_per_mtok": 75
+    },
+    "claude-sonnet-4-6": {
+      "input_per_mtok": 3,
+      "output_per_mtok": 15,
+      "cache_read_per_mtok": 0.3,
+      "cache_write_5m_per_mtok": 3.75,
+      "cache_write_1h_per_mtok": 15
+    },
+    "claude-haiku-4-5-20251001": {
+      "input_per_mtok": 0.8,
+      "output_per_mtok": 4,
+      "cache_read_per_mtok": 0.08,
+      "cache_write_5m_per_mtok": 1,
+      "cache_write_1h_per_mtok": 4
+    }
+  },
+  "label_prefix": "harness:",
+  "deny_paths": [".claude/**", "docs/harness/**", ".github/**", ".claude-context/**"],
+  "frontend_paths": ["src/", "src/styles/"],
+  "persona_pool": [
+    { "id": "feature-quality-gate", "description": "Feature quality, acceptance criteria, regression" },
+    { "id": "privacy-by-design", "description": "Privacy, data handling, keyboard/mouse aggregate rules" },
+    { "id": "ux-review", "description": "UX, interaction states, accessibility, copy" },
+    { "id": "desktop-resident-stability", "description": "Timers, listeners, background tasks, memory" },
+    { "id": "frontend-design", "description": "Frontend UI components, CSS, visual design" },
+    { "id": "pr-review-fix", "description": "PR review analysis, inline comments, fixes" }
+  ],
+  "persona_auto_select_rules": {
+    "frontend": ["frontend-design", "ux-review", "privacy-by-design"],
+    "hooks_secrets_auth": ["privacy-by-design", "pr-review-fix", "feature-quality-gate"],
+    "rust": ["desktop-resident-stability", "feature-quality-gate", "privacy-by-design"],
+    "default": ["feature-quality-gate", "ux-review", "privacy-by-design"]
+  },
+  "persona_auto_select_path_patterns": {
+    "frontend": ["src/", "src/styles/"],
+    "hooks_secrets_auth": [".claude/hooks/", ".github/"],
+    "rust": ["src-tauri/src/"]
+  },
+  "sanitization_rules": {
+    "strip_html_comments": true,
+    "strip_zero_width": true,
+    "detect_fenced_injection": true,
+    "strip_image_alt_injection": true,
+    "url_allowlist": ["github.com", "docs.anthropic.com", "api.anthropic.com"]
+  },
+  "drift_sla_days": 14,
+  "drift_check_interval_cycles": 5,
+  "drift_check_interval_days": 7,
+  "body_language": "ko",
+  "pr_title_language": "en",
+  "follow_up_prefix": "[ ] follow-up:",
+  "branch_prefix": "claude/",
+  "autonomous_mode": false,
+  "auto_merge_enabled": true,
+  "hook_validation_hashes": {},
+  "staged_mode": {
+    "enabled": false,
+    "stage_budgets": {
+      "s1": 8000,
+      "s2": 8000,
+      "impl_phase": 15000,
+      "total": 50000,
+      "warning_ratio": 0.8
+    },
+    "loc_budgets": {
+      "impl_phase": 700,
+      "total": 2000
+    },
+    "pr_diff_bloat_threshold": 5,
+    "review_loop_budget": 3,
+    "deny_paths": [".claude/**", "docs/harness/**", ".github/**", ".claude-context/**"],
+    "bot_review_authors": ["github-actions[bot]", "gemini-code-assist[bot]", "openai-codex[bot]"],
+    "ci_timing_threshold_ms": 10000,
+    "idempotency_keys": ["sub-issue-marker", "label-transition-log", "commit-hash", "in-progress-label"]
+  }
+}
