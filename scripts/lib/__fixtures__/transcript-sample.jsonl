@@ -1,0 +1,8 @@
+{"type":"user","timestamp":"2026-05-04T10:00:00.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","message":{"role":"user","content":[{"type":"text","text":"please refactor"}]}}
+{"type":"assistant","timestamp":"2026-05-04T10:00:01.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_1","name":"Edit","input":{"file_path":"/home/user/proj/src/foo.ts","old_string":"alpha","new_string":"beta"}}]}}
+{"type":"user","timestamp":"2026-05-04T10:00:02.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_1","content":"updated 1 line","is_error":false}]}}
+{"type":"assistant","timestamp":"2026-05-04T10:00:03.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","message":{"role":"assistant","content":[{"type":"tool_use","id":"toolu_2","name":"Edit","input":{"file_path":"/home/user/proj/src/foo.ts","old_string":"alpha","new_string":"gamma"}}]}}
+{"type":"user","timestamp":"2026-05-04T10:00:04.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","message":{"role":"user","content":[{"type":"tool_result","tool_use_id":"toolu_2","content":"error: TS2304: Cannot find name 'gamma'.","is_error":true}]}}
+{"type":"system","subtype":"hook_decision","timestamp":"2026-05-04T10:00:05.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","hook_name":"privacy_guard","decision":"deny"}
+{"type":"system","subtype":"hook_decision","timestamp":"2026-05-04T10:00:06.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa","hook_name":"bash_guard","decision":"ask"}
+{"type":"system","subtype":"precompact","timestamp":"2026-05-04T10:00:07.000Z","sessionId":"a1b2c3d4-aaaa-aaaa-aaaa-aaaaaaaaaaaa"}
