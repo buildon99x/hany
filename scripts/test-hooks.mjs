@@ -88,6 +88,11 @@ expectContains(
   "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
 );
 expectContains(
+  "prompt referencing docs/spec/ path injects context",
+  run("user_prompt_spec_path", [hooks("user_prompt_harness_context.mjs")], j({ hook_event_name: "UserPromptSubmit", prompt: "update docs/spec/myfeature_s1.md" })),
+  "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
+);
+expectContains(
   "Korean 하네스 keyword injects context",
   run("user_prompt_ko", [hooks("user_prompt_harness_context.mjs")], j({ hook_event_name: "UserPromptSubmit", prompt: "하네스 구조를 평가해줘" })),
   "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
@@ -303,9 +308,17 @@ expectContains(
   run(
     "post_s1_trigger",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: "docs/feat_test-feat_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
+    j({ tool_input: { file_path: "docs/spec/test-feat_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
   ),
   "Quality Oracle",
+);
+expectEmpty(
+  "docs/feat_ s1 path does not trigger Quality Oracle (legacy path)",
+  run(
+    "post_s1_feat_no_trigger",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: "docs/feat_myfeature_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
+  ),
 );
 expectEmpty(
   "non-feat _s1 file does not trigger Quality Oracle",
@@ -328,9 +341,17 @@ expectContains(
   run(
     "post_s2_trigger",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: "docs/feat_test-feat_s2.md", content: "## Phase A\n전제조건:" } }),
+    j({ tool_input: { file_path: "docs/spec/test-feat_s2.md", content: "## Phase A\n전제조건:" } }),
   ),
   "Harness Readiness Oracle",
+);
+expectEmpty(
+  "docs/feat_ s2 path does not trigger Harness Readiness Oracle (legacy path)",
+  run(
+    "post_s2_feat_no_trigger",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: "docs/feat_myfeature_s2.md", content: "## Phase A\n전제조건:" } }),
+  ),
 );
 expectEmpty(
   "generic design doc does not trigger s2 Oracle",
@@ -347,7 +368,7 @@ expectEmpty(
   run("stop_present", [hooks("stop_exit_check.mjs")], ""),
 );
 {
-  const tempLedger = resolve(repoRoot, "docs/feat_test-retro-check_harness_ledger.md");
+  const tempLedger = resolve(repoRoot, "docs/spec/test-retro-check_harness_ledger.md");
   writeFileSync(tempLedger, "# Test Ledger\n");
   try {
     expectContains(
@@ -364,7 +385,7 @@ expectEmpty(
   run("stop_no_ledger", [hooks("stop_exit_check.mjs")], ""),
 );
 {
-  const tempLedger3 = resolve(repoRoot, "docs/feat_test-inprogress_harness_ledger.md");
+  const tempLedger3 = resolve(repoRoot, "docs/spec/test-inprogress_harness_ledger.md");
   writeFileSync(
     tempLedger3,
     "# Test Ledger\n\n## Phase Status\n| Phase | 상태 | 완료 커밋 |\n|---|---|---|\n| Phase 1 | ✅ 완료 | abc123 |\n| Phase 2 | 🔄 진행 중 | — |\n",

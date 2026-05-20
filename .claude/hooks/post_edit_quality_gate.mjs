@@ -39,8 +39,8 @@ if (harnessSelfMod) {
 }
 
 // s1/s2 design doc saves: inject Oracle checklist before source-ext early-exit.
-// Path pattern restricted to `docs/feat_*_s[12].md` (s2 §2 Phase D 인수조건 1, P4).
-if (/(^|\/)docs\/feat_.+_s1\.md$/i.test(filePath)) {
+// Path pattern restricted to `docs/spec/*_s[12].md`.
+if (/(^|\/)docs\/spec\/.+_s1\.md$/i.test(filePath)) {
   emitAdvisory(
     "PostToolUse",
     "Quality Oracle — s1 저장 확인:\n" +
@@ -52,7 +52,7 @@ if (/(^|\/)docs\/feat_.+_s1\.md$/i.test(filePath)) {
   );
 }
 
-if (/(^|\/)docs\/feat_.+_s2\.md$/i.test(filePath)) {
+if (/(^|\/)docs\/spec\/.+_s2\.md$/i.test(filePath)) {
   emitAdvisory(
     "PostToolUse",
     "Harness Readiness Oracle — s2 저장 확인:\n" +
