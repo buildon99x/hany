@@ -74,14 +74,19 @@ export function parseDecisionLog(content) {
     if (!m) continue;
     const dateRaw = m[2].trim();
     const isoMatch = dateRaw.match(ISO8601_RE);
+    const decision = m[4].trim();
     const reason = m[5].trim();
-    const triggerTags = [...reason.matchAll(/\[([a-z][a-z0-9-]*-trigger)\]/g)].map(t => t[1]);
+    const tagRe = /\[([a-z][a-z0-9-]*-trigger)\]/g;
+    const triggerTags = [
+      ...[...decision.matchAll(tagRe)].map(t => t[1]),
+      ...[...reason.matchAll(tagRe)].map(t => t[1]),
+    ];
     rows.push({
       num: m[1].trim(),
       date: dateRaw,
       iso: isoMatch ? isoMatch[1] : null,
       phase: m[3].trim(),
-      decision: m[4].trim(),
+      decision,
       reason,
       triggerTags,
       commit: m[6].trim(),

@@ -21,7 +21,7 @@ status: active
 | # | Phase | 상태 | 커밋 | 비고 |
 |---|---|---|---|---|
 | 1 | A — 정상 기능 (단독 verifiable) | ✅ 완료 | (this commit) | scripts/harness-watch.mjs · scripts/lib/ledger-parser.mjs · package.json |
-| 2 | B — 검증·통합 (Phase A 후) | 🔲 미시작 | — | docs/harness/README.md · tests/harness-watch/* |
+| 2 | B — 검증·통합 (Phase A 후) | ✅ 완료 | (this commit) | docs/harness/README.md · tests/harness-watch/* |
 
 상태 기호: 🔲 미시작 · 🟡 진행 · ⏸ 보류(에스컬레이션) · ✅ 완료 · ⚠️ 회귀.
 
@@ -41,16 +41,24 @@ status: active
 | 8 | 2026-05-21 | A | Phase A 인수조건 [verify:] 1-5 PASS · 6-7 runtime-deferred (비-TTY 환경) | grep counts == 1 / --once exit 0 / --help exit 0 / hooks:test 69/69 / 코드 검증 cleanup() | (this commit) |
 | 9 | 2026-05-21 | A | Lifecycle cleanup: 단일 `cleanup()` 함수가 watcher/timers/raw-mode/cursor/stdin 일괄 정리, SIGINT/SIGTERM/SIGBREAK/SIGHUP/SIGPIPE/EPIPE 라우팅 | PostToolUse hook follow-up 응답 — 격리 원칙 + non-negotiable lifecycle | (this commit) |
 | 10 | 2026-05-21 | A | Security boundary: 새 hook/upload/network 0, 읽기 전용 디스크 접근만, 출력 aggregate-only (sha7/카운트/상대시각) | PostToolUse hook follow-up 응답 — non-negotiable scrubber | (this commit) |
+| 11 | 2026-05-21 | B | 환경변수 `HARNESS_WATCH_SPEC_DIR` override 추가 | 격리 테스트가 임시 spec 디렉터리 사용 시 필요, 일반 사용에 영향 0 | (this commit) |
+| 12 | 2026-05-21 | B | 파서 trigger 태그 스캔: 이유 컬럼 → 결정+이유 양쪽 확장 | Logic error 발견 (template `결정 또는 이유`) → 즉시 수정 + 회귀 테스트 추가 (18 passed) | (this commit) |
+| 13 | 2026-05-21 | B | Phase B 인수조건 [verify:] 1-5 PASS · 6 자명 통과 (tsconfig 부재) | README grep == 1 / tests 18/18 / NO_COLOR ANSI 0 / EPIPE graceful / hooks:test 69/69 / `npx tsc` no-op | (this commit) |
+| 14 | 2026-05-21 | B | s1 §11 #7 ISO8601 사전 검증: anyMissingIso=false, `[pre-grep]` 1건 카운트 정상 | "since start" 폴백 미발동 — s1 §6 비명시 제약 통과 | (this commit) |
 
 ## Escalation Log
 
 | # | 날짜 | Phase | 카테고리 | 사유 | 사용자 답변 | 해결 상태 |
 |---|---|---|---|---|---|---|
+| 1 | 2026-05-21 | B | Unclassified (test infra) | s2 가 vitest snapshot 명시했으나 vitest 미설치/미구성 + tests/ 부재 | 옵션 1: Plain Node 스크립트 (`scripts/test-hooks.mjs` 패턴) | ✅ 해결 (tests/harness-watch/run-all.mjs 18 passed) |
 
 ## Scope Discovery Log
 
 | # | 날짜 | Phase | 발견 항목 | Context Carry 일치 | 처리 결과 |
 |---|---|---|---|---|---|
+| 1 | 2026-05-21 | B | `docs/harness/README.md` 에 "inventory 표" 부재 (문서 카탈로그만) | Match — s1 §4 "정확한 줄은 Phase B 시작 시 Read 로 확정" 명시 | 진입 경로 표에 "실시간 하네스 상태 모니터링" 행 1줄 추가 (자율) |
+| 2 | 2026-05-21 | B | vitest 미설치/미구성 + tests/ 디렉터리 부재 | No match | **에스컬레이션** → 사용자 옵션 1 선택 (Plain Node 스크립트, `scripts/test-hooks.mjs` 패턴 정합) → tests/harness-watch/run-all.mjs + `harness-watch:test` npm script |
+| 3 | 2026-05-21 | B | tsconfig.json 부재로 `[verify: tsc]` 자명 통과 | Match — s1 §6 MVP 경계 ".mjs 만, TS 없음" 정합 | 회귀 대상 없음으로 통과 처리 |
 
 ## Loop Budget Tracker
 
@@ -60,6 +68,7 @@ status: active
 | B | 0/3 | 0/2 | — |
 
 > Phase A: 인수조건 1차 통과 (재시도 0).
+> Phase B: 인수조건 1차 통과 (재시도 0), Scope Discovery 3건 (1·3 Match 자율 / 2 Escalation 해결).
 
 ## Subagent Invocations
 

@@ -15,6 +15,7 @@ portability: project-specific
 | 상황 | 시작 문서 |
 |---|---|
 | 처음 시스템 이해 | `HARNESS_PLAN.md` (정책 의도) |
+| 실시간 하네스 상태 모니터링 | `npm run harness:watch` (TUI · `docs/spec/*_harness_ledger.md` 감시) |
 | 새 피처 작업 | `HARNESS_OPERATING_PLAYBOOK.md` (7단계 절차) |
 | Medium+ 피처 구현 | `/harness-start {feat-name}` → `.claude/skills/harness-entry/SKILL.md` |
 | GitHub 이슈 자율 처리 | `/harness-loop` → `.claude/commands/harness-loop.md` |

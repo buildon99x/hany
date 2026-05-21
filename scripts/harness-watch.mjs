@@ -13,7 +13,7 @@ import { parseLedger, countTriggerTagsSince } from './lib/ledger-parser.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const SPEC_DIR = join(ROOT, 'docs', 'spec');
+const SPEC_DIR = process.env.HARNESS_WATCH_SPEC_DIR || join(ROOT, 'docs', 'spec');
 
 const DEBOUNCE_MS = 200;
 const POLL_FALLBACK_MS = 5000;

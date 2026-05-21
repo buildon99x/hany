@@ -14,7 +14,8 @@
     "harness-loop:test": "node tests/harness-loop/run-all.mjs",
     "harness:effort": "node scripts/harness-effort-collect.mjs",
     "harness:dashboard": "node scripts/generate-harness-dashboard.mjs",
-    "harness:watch": "node scripts/harness-watch.mjs"
+    "harness:watch": "node scripts/harness-watch.mjs",
+    "harness-watch:test": "node tests/harness-watch/run-all.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
