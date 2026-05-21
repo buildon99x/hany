@@ -59,6 +59,16 @@ When starting a new feature, Claude Code should:
 ### 설정
 - `harness-loop.config.json` — `loop_budget`/`required_docs`/`strict_mode_default` 는 portable, `staged_mode.deny_paths`·`persona_pool`·프로젝트 특화 경로 패턴은 project-specific.
 
+## Advisory Gates (design-rule.md §6)
+
+| Footnote | 게이트 | 발동 태그 | Tier |
+|---|---|---|---|
+| Footnote 2 | C1~C6: ATK 매핑표·`file:line` 인용·`[verify:]` 태그·위임 임계 OR 4중·harness-entry grep·privacy 체크리스트 | `[s1-grep-trigger]` / `[verify-tag-trigger]` / `[privacy-surface-trigger]` | Medium+ |
+| Footnote 3 | A2 Self-verify footer·E1 Subagent Invocations 1행·Privacy scrub | `[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]` | All tier |
+| Footnote 4 | G1 영향 파일 표 작성 전 `grep -rl` 결과 인용·G2 Phase Contract `mode: subagent\|main-batch` 명시 | `[pre-grep-trigger]` / `[delegation-mode-trigger]` | Medium+ |
+
+모든 Footnote 는 placeholder 미발효 상태 (30일 advisory, 차단 아님). 세부는 `.claude-context/design-rule.md` §6 참조.
+
 ## Activation
 Claude Code discovers project skills from `.claude/skills/` and project hooks from `.claude/settings.json`. Restart Claude Code after adding or changing skills. Settings changes are normally picked up by Claude Code's file watcher, but restart if behavior is unclear.
 

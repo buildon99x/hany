@@ -121,5 +121,8 @@ Stop and ask for user direction when:
 ## Subagent Delegation (advisory — design-rule.md §6 Footnote 3)
 general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용. 세부는 `.claude-context/design-rule.md` §5.4 참조. 30일 advisory · 차단 아님 · trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) 으로 발동 카운트.
 
+## Delegation Efficiency (advisory — design-rule.md §6 Footnote 4)
+s1 §영향 파일 표 작성 전 `grep -rl '<대상 패턴>'` 실행 → 결과 인용 권장 (`[pre-grep-trigger]`). s2 Phase Contract 서브에이전트 스코프 첫 줄에 `mode: subagent` / `mode: main-batch` 명시 권장 (`[delegation-mode-trigger]`). Medium+ 적용 · Low 면제 · 30일 advisory · 차단 아님.
+
 ## Done Definition
 A task is done when the applicable tier evidence exists, privacy scrubber passes, unresolved risks are named, and the next owner can understand the result from the Feature Quality Note without reconstructing the work from chat history.

@@ -22,8 +22,10 @@ Before any Phase execution, verify:
 3. For Medium+ tier features: ATK section present in s1 with the obligatory answers (Medium = 인접 불변·이전 실패 의무 2 + 비명시 제약·MVP 경계 권장 2; High = 4 전체 의무). Answers in the form '해당 없음 + 이유' count as complete; bare '해당 없음' without a stated reason counts as missing.
 4. **(advisory — design-rule.md §6 Footnote 2)** s1 §영향 파일 표에 `file:line` 인용 컬럼이 채워져 있는지 grep. 정규식: `` `[^`]+:(\d+|new|multi|extern[^`]*)` ``. 누락 시 ledger Decision Log에 `[s1-grep-trigger]` 태그 기록 후 진행(차단 아님 — 30일 advisory).
 5. **(advisory — design-rule.md §6 Footnote 2)** s2 각 Phase Contract 인수조건 줄에 `[verify:]` 태그가 있는지 grep. 정규식: `\[verify: [a-z+]+(?:\+[a-z]+)*\]`. 누락 시 `[verify-tag-trigger]` 태그 기록 후 진행.
+6. **(advisory — design-rule.md §6 Footnote 4)** s1 §영향 파일 표에 `grep -rl` 실행 결과 인용 흔적이 있는지 확인 (`pre-grep`, `grep -rl`, `grep -r` 키워드). 누락 시 `[pre-grep-trigger]` ledger Decision Log 기록 후 진행 (차단 아님 — 30일 advisory).
+7. **(advisory — design-rule.md §6 Footnote 4)** s2 각 Phase Contract 서브에이전트 스코프 첫 줄에 `mode: subagent` 또는 `mode: main-batch` prefix 가 있는지 grep. 누락 시 `[delegation-mode-trigger]` ledger Decision Log 기록 후 진행 (차단 아님 — 30일 advisory).
 
-If any check 1~3 fails, report the specific missing item and stop. Items 4·5 are advisory: record trigger tag in Decision Log and proceed.
+If any check 1~3 fails, report the specific missing item and stop. Items 4·5·6·7 are advisory: record trigger tag in Decision Log and proceed.
 
 ## Ledger Initialize / Resume
 
