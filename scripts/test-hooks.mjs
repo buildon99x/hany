@@ -288,6 +288,14 @@ expectContains(
   "Harness self-maintenance mode",
 );
 expectEmpty(
+  "retired .claude-context/ prefix no longer triggers self-maintenance",
+  run(
+    "post_retired_claudecontext",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: ".claude-context/legacy.md", content: "noop" } }),
+  ),
+);
+expectEmpty(
   "regular src/ edit does not trigger self-maintenance",
   run(
     "post_src_no_self_maint",
