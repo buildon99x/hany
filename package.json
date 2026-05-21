@@ -6,11 +6,15 @@
   "author": "Hany Harness",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=18.17"
+  },
   "scripts": {
     "hooks:test": "node scripts/test-hooks.mjs",
     "harness-loop:test": "node tests/harness-loop/run-all.mjs",
     "harness:effort": "node scripts/harness-effort-collect.mjs",
-    "harness:dashboard": "node scripts/generate-harness-dashboard.mjs"
+    "harness:dashboard": "node scripts/generate-harness-dashboard.mjs",
+    "harness:watch": "node scripts/harness-watch.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
