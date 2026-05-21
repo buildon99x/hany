@@ -154,5 +154,5 @@ Producer §1-4 에서 `i18n|security|migration|cargo|cross-cutting` 키워드 �
 - 추론 구현: `tests/harness-loop/lib/infer.mjs`
 - 본문 빌더: `tests/harness-loop/lib/issue-body-builder.mjs`
 - Config: `harness-loop.config.json` (`label_prefix`, `sanitization_rules`)
-- Stage 1 명세 (자율 사이클): `docs/feat_harness-git-issue-loop_s1.md` §3 (Producer/Dispatcher)
-- Stage 1 명세 (수동 promotion): `docs/feat_harness-import_s1.md`
+- Stage 1 명세 (자율 사이클): `docs/spec/harness-git-issue-loop_s1.md` §3 (Producer/Dispatcher)
+- Stage 1 명세 (수동 promotion): `docs/spec/harness-import_s1.md`

@@ -9,7 +9,8 @@
   "scripts": {
     "hooks:test": "node scripts/test-hooks.mjs",
     "harness-loop:test": "node tests/harness-loop/run-all.mjs",
-    "harness:effort": "node scripts/harness-effort-collect.mjs"
+    "harness:effort": "node scripts/harness-effort-collect.mjs",
+    "harness:dashboard": "node scripts/generate-harness-dashboard.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",

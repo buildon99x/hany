@@ -12,7 +12,7 @@
 ## Collection
 - Source: `%USERPROFILE%\.claude\projects\<repo-hash>\*.jsonl` (수기 트리거, 자동 수집 0)
 - Collection timing: `npm run analyze-session` 명시 호출 시점만
-- User-visible explanation: README → `docs/feat_session-efficiency-metrics_s{0,1,2}.md`
+- User-visible explanation: README → `docs/spec/session-efficiency-metrics_s{0,1,2}.md`
 - Permission required: 추가 권한 0 (로컬 read 전용)
 - Raw input present: No — 어댑터 경계에서 prompt/tool_input/file content/bash command/window title/coords 폐기
 - Aggregation granularity: 카운트(정수) + 비율(소수 2자리)

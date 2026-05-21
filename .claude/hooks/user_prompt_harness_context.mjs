@@ -16,7 +16,7 @@ const triggers = [
   /\b(feature|ux|privacy|storage|schema|hook|harness|migration|persisted|lifecycle|security|scrubber|ledger|retro|adr|stage|phase|tier|gate|soak)\b/i,
   /\/(stage-start|stage-end|harness-start|harness-maintain|harness-loop|harness-import|harness-loop-staged)\b/i,
   /(기능|프라이버시|마이그레이션|보안|스키마|하네스|라이프사이클|회고|페이즈|스테이지|영속|핸드오프|타이머|리스너|워커)/,
-  /(^|[\s`"'(])(src\/|src-tauri\/|docs\/feat_|docs\/harness\/|\.claude\/)/,
+  /(^|[\s`"'(])(src\/|src-tauri\/|docs\/spec\/|docs\/harness\/|\.claude\/)/,
 ];
 
 if (!triggers.some((re) => re.test(promptText))) {

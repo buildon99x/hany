@@ -56,9 +56,9 @@ Pixel Horizon 품질 하네스 한눈에 보기. 상세 규칙은 각 문서 참
 검증: `npm run hooks:test` (30 케이스). 훅·설정 변경 전 항상 통과.
 
 ### D. 런타임 산출물 (피처별, git 추적)
-- `docs/feat_{name}_s1.md` / `_s2.md` — Stage 1·2 설계 (Context Carry, Phase Contract).
-- `docs/feat_{name}_harness_ledger.md` — Phase Status / Decision Log / Escalation Log / Scope Discovery Log. Phase 커밋에 번들.
-- `docs/feat_{name}_harness_retrospective.md` — 모든 Phase 완료 후 작성, 마지막 Phase 커밋에 번들.
+- `docs/spec/{name}_s1.md` / `_s2.md` — Stage 1·2 설계 (Context Carry, Phase Contract).
+- `docs/spec/{name}_harness_ledger.md` — Phase Status / Decision Log / Escalation Log / Scope Discovery Log. Phase 커밋에 번들.
+- `docs/spec/{name}_harness_retrospective.md` — 모든 Phase 완료 후 작성, 마지막 Phase 커밋에 번들.
 
 ### E. 4-Layer Test Harness (HARNESS_PLAN §6)
 Fixture(synthetic aggregate) → Driver(headless·mock·sampler) → Oracle(snapshot·perceptual·SLO·scrubber) → Reporter(JUnit·HTML·대시보드).

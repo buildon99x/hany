@@ -32,7 +32,7 @@ Low / Medium / High classification assigned to a feature before implementation; 
 The six labels used in the Retrospective Effort 분석 section to classify why a Phase exceeded the 30% / 20-minute / 50k thresholds: **탐색** (exploration), **재시도** (retry), **리뷰응답** (review response), **cross-cutting**, **외부 IO**, **컨텍스트 폭주** (context blowup). Multiple labels per Phase allowed.
 
 ## Effort Ledger
-Phase-scoped table inside `docs/feat_{feat-name}_harness_ledger.md` recording Active Turn Time, wall-clock elapsed, and five-way token usage (input / output / 1h cache-create / 5m cache-create / cache-read). Auto-updated inside `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` sentinel markers via `npm run harness:effort` or PreToolUse hook; threshold marks (`[T]` / `[K]` / `[TK]`) are assigned at retrospective time after the Σ row is finalized. Applies to Medium+ new ledgers only.
+Phase-scoped table inside `docs/spec/{feat-name}_harness_ledger.md` recording Active Turn Time, wall-clock elapsed, and five-way token usage (input / output / 1h cache-create / 5m cache-create / cache-read). Auto-updated inside `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` sentinel markers via `npm run harness:effort` or PreToolUse hook; threshold marks (`[T]` / `[K]` / `[TK]`) are assigned at retrospective time after the Σ row is finalized. Applies to Medium+ new ledgers only.
 
 ## Feature Quality Note
 The compact handoff attached to a PR or task summary that lists requirement, UX, stability, privacy, and operational evidence. Template: `docs/harness/FEATURE_QUALITY_NOTE_TEMPLATE.md`.

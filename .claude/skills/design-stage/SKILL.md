@@ -1,11 +1,11 @@
 ---
 name: design-stage
-description: Stage 기반 설계 워크플로우 (Stage 0 아이데이션 → 1 기능 설계 → 2 구현 계획). /stage-start · /stage-end 슬래시 명령 또는 한국어 자연어 트리거로 인보크. 산출물은 docs/feat_{name}_s{N}.md 에 저장.
+description: Stage 기반 설계 워크플로우 (Stage 0 아이데이션 → 1 기능 설계 → 2 구현 계획). /stage-start · /stage-end 슬래시 명령 또는 한국어 자연어 트리거로 인보크. 산출물은 docs/spec/{name}_s{N}.md 에 저장.
 ---
 
 # /design-stage — Stage 기반 설계 워크플로우
 
-기능 제안·설계를 "Stage 0 아이데이션 → Stage 1 기능 설계 → Stage 2 구현 계획"의 3단계로 진행하고, 각 단계 산출물을 `docs/feat_{feat-name}_s{N}.md`로 저장한다.
+기능 제안·설계를 "Stage 0 아이데이션 → Stage 1 기능 설계 → Stage 2 구현 계획"의 3단계로 진행하고, 각 단계 산출물을 `docs/spec/{feat-name}_s{N}.md`로 저장한다.
 
 ## 발동 조건
 사용자 메시지가 다음 중 하나에 해당할 때 본 스킬을 인보크한다.

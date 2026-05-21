@@ -30,12 +30,12 @@ When starting a new feature, Claude Code should:
 - `SessionStart`:
   - `session_status_snapshot.mjs` — injects the documentation map and non-negotiables.
   - `worktree_node_modules_link.mjs` — when run inside a git worktree (not the main checkout), symlinks `node_modules` to the main worktree so Vite/Tauri tooling resolves dependencies without a separate install.
-- `UserPromptSubmit` (`user_prompt_harness_context.mjs`): injects harness context when the prompt contains feature/UX/privacy/storage/schema/hook/harness keywords, a `/stage-*` or `/harness-*` slash command, or references project paths (`src/`, `src-tauri/`, `docs/feat_`, `docs/harness/`, `.claude/`). Prompts without any match are passed through without injection to avoid polluting unrelated conversations.
+- `UserPromptSubmit` (`user_prompt_harness_context.mjs`): injects harness context when the prompt contains feature/UX/privacy/storage/schema/hook/harness keywords, a `/stage-*` or `/harness-*` slash command, or references project paths (`src/`, `src-tauri/`, `docs/spec/`, `docs/harness/`, `.claude/`). Prompts without any match are passed through without injection to avoid polluting unrelated conversations.
 - `PreToolUse(Bash)`:
   - `pre_tool_bash_guard.mjs` — blocks destructive or remote-execution command patterns; asks for confirmation on publishing or dependency installation.
-  - `pre_tool_effort_collect.mjs` (matcher `Bash(git commit:*)`) — when the commit message contains `Ledger: Phase {X}`, detects the active Phase, locates the matching `docs/feat_*_harness_ledger.md`, and runs `scripts/harness-effort-collect.mjs` to populate the `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` region before commit. Always exits 0 (advisory).
+  - `pre_tool_effort_collect.mjs` (matcher `Bash(git commit:*)`) — when the commit message contains `Ledger: Phase {X}`, detects the active Phase, locates the matching `docs/spec/*_harness_ledger.md`, and runs `scripts/harness-effort-collect.mjs` to populate the `<!-- effort:auto:begin --> … <!-- effort:auto:end -->` region before commit. Always exits 0 (advisory).
 - `PreToolUse(Edit|Write)` (`pre_tool_privacy_guard.mjs`): asks for confirmation when edit/write input appears to add raw input fields.
-- `PostToolUse(Edit|Write)` (`post_edit_quality_gate.mjs`): reminds Claude which quality checks apply based on touched concepts. Branch order: (1) **Harness self-maintenance** — any edit to `.claude/hooks/`, `.claude/settings(.local).json`, `.claude-context/`, `.claude/skills/`, `.claude/commands/`, or `docs/harness/` emits the self-maintenance checklist and short-circuits the remaining branches (see `docs/harness/HARNESS_SELF_MAINTENANCE.md`). (2) `docs/feat_*_s1.md` / `docs/feat_*_s2.md` saves emit the Quality Oracle / Harness Readiness Oracle checklist. (3) `.css` edits emit a stylelint advisory. (4) Source-file pattern checks (raw input identifiers, lifecycle primitives, persistence/schema, secrets/exec, UX-state primitives).
+- `PostToolUse(Edit|Write)` (`post_edit_quality_gate.mjs`): reminds Claude which quality checks apply based on touched concepts. Branch order: (1) **Harness self-maintenance** — any edit to `.claude/hooks/`, `.claude/settings(.local).json`, `.claude-context/`, `.claude/skills/`, `.claude/commands/`, or `docs/harness/` emits the self-maintenance checklist and short-circuits the remaining branches (see `docs/harness/HARNESS_SELF_MAINTENANCE.md`). (2) `docs/spec/*_s1.md` / `docs/spec/*_s2.md` saves emit the Quality Oracle / Harness Readiness Oracle checklist. (3) `.css` edits emit a stylelint advisory. (4) Source-file pattern checks (raw input identifiers, lifecycle primitives, persistence/schema, secrets/exec, UX-state primitives).
 - `Stop`:
   - `stop_exit_check.mjs` — blocks only when required harness documents are missing by default. Warns when a Ledger is complete but its Retrospective is missing. Set `PIXEL_HORIZON_STRICT_STOP=1` to also block completion while changed files remain and force a final evidence/handoff check.
   - `cost_ledger.mjs` — inactive in normal sessions. Activated only when `HARNESS_LOOP_CYCLE_ID` is set (the harness-loop autonomous worker). Aggregates per-cycle token usage from session JSONL, computes USD estimate using `harness-loop.config.json` model pricing, and appends a record to `~/.claude/cache/harness-loop/cost-ledger.jsonl`.
@@ -58,6 +58,16 @@ When starting a new feature, Claude Code should:
 
 ### 설정
 - `harness-loop.config.json` — `loop_budget`/`required_docs`/`strict_mode_default` 는 portable, `staged_mode.deny_paths`·`persona_pool`·프로젝트 특화 경로 패턴은 project-specific.
+
+## Advisory Gates (design-rule.md §6)
+
+| Footnote | 게이트 | 발동 태그 | Tier |
+|---|---|---|---|
+| Footnote 2 | C1~C6: ATK 매핑표·`file:line` 인용·`[verify:]` 태그·위임 임계 OR 4중·harness-entry grep·privacy 체크리스트 | `[s1-grep-trigger]` / `[verify-tag-trigger]` / `[privacy-surface-trigger]` | Medium+ |
+| Footnote 3 | A2 Self-verify footer·E1 Subagent Invocations 1행·Privacy scrub | `[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]` | All tier |
+| Footnote 4 | G1 영향 파일 표 작성 전 `grep -rl` 결과 인용·G2 Phase Contract `mode: subagent\|main-batch` 명시 | `[pre-grep-trigger]` / `[delegation-mode-trigger]` | Medium+ |
+
+모든 Footnote 는 placeholder 미발효 상태 (30일 advisory, 차단 아님). 세부는 `.claude-context/design-rule.md` §6 참조.
 
 ## Activation
 Claude Code discovers project skills from `.claude/skills/` and project hooks from `.claude/settings.json`. Restart Claude Code after adding or changing skills. Settings changes are normally picked up by Claude Code's file watcher, but restart if behavior is unclear.
