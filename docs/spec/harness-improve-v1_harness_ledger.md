@@ -17,7 +17,7 @@ portability: project-specific
 | # | Phase | 상태 | 커밋 | 비고 |
 |---|---|---|---|---|
 | 1 | A — design-rule.md 본문 추가 | ✅ 완료 | 85128a4 | |
-| 2 | B — 4중 동기 + harness-entry SKILL 갱신 | ✅ 완료 | TBD | |
+| 2 | B — 4중 동기 + harness-entry SKILL 갱신 | ✅ 완료 | 88b0f92 | |
 
 상태 기호: 🔲 미시작 · 🟡 진행 · ⏸ 보류(에스컬레이션) · ✅ 완료 · ⚠️ 회귀.
 
