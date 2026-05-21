@@ -89,6 +89,22 @@ status: complete
 
 ---
 
+## 7-B. 개선 후보 평가 결과 (2026-05-21)
+
+retrospective §7 의 3개 제안을 신중 분석 (필요성·기대효과·트레이드오프) 후 **현 시점 액션 없음** 으로 결정. 30일 freeze 권장 유지.
+
+| 후보 | 결정 | 핵심 사유 |
+|---|---|---|
+| 1. harness-entry SKILL item 6·7 section-aware grep | **30일 후 재검토** | Footnote 4 placeholder 미발효 — 발동 카운트 누적 자체가 시작 안 됨. 정밀도 개선 측정 대상 부재. awk 기반 = Windows 호환성 우려. §6 Footnote 4 "30일 freeze 권장" 정면 위반. |
+| 2. advisory 게이트 검증 hooks:test 분리 | **적용 안 함** | §6 Footnote 1 "자동화 헬퍼 0" 원칙 위반. advisory = LLM 권고 판단 — hooks 자동화로 옮기면 차단 게이트로 변질. |
+| 3. 하네스 테스트 spec 시나리오 패턴 룰 본문화 | **적용 안 함** | 1회성 패턴 (반복 빈도 낮음). design-rule 비대화 + "룰 9일 5회 변경" anti-pattern 재발 위험. |
+
+**재검토 트리거**: Footnote 4 발효일 +30일 시점 발동 카운트 ≥3 + false positive 비율 측정 가능 시 후보 1 재평가.
+
+**진짜 성과**: 하네스가 첫 실행에서 advisory 게이트 false positive 를 자체 검출 — 룰 추가 없이 한계를 데이터로 기록함 (Scope Discovery Log #1 이 증거).
+
+---
+
 ## 8. 프로세스 메모
 
 - Phase A 서브에이전트 (mode: subagent) 가 스크립트·package.json·.gitignore 를 1회 위임으로 완성 — subagent delegation 효율 양호 (21k tokens, 93s, 9 tool calls).
