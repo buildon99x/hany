@@ -84,7 +84,7 @@ Stage 진행 중 사용자 답변이 없는 결정 항목을 자율 판단할 �
 |---|---|---|---|
 | Stage 1 | `§ Context Carry` 섹션 | 결정 / 기각 옵션 / 기각 사유 표, **결정 항목 ≥2개** (s1 Q6) | Medium+ 의무 · Low 면제 |
 | Stage 1 | ATK 체크리스트 | 4문항: 인접 불변조건 · 이전 실패 · 비명시 제약 · MVP 경계. **ATK 매핑표 5종 권장**(lifecycle / 외부 출력 / baseline / API grep / listener 중복) — advisory §6 footnote 2 | Medium = 의무 2(인접 불변·이전 실패) + 권장 2 · High = 4 전체 의무 · Low 면제 (s1 Q11) |
-| Stage 1 | `§ 영향 파일 표`에 **전제조건 열** + **`file:line` 인용 컬럼**(advisory §6 footnote 2) | Assumption Verifier 입력 보장. 라이브러리 외부 심볼은 `extern:` 마커, 신규 파일은 `new`, 다지점은 `multi` 사용 | Medium+ 의무 · Low 면제 |
+| Stage 1 | `§ 영향 파일 표`에 **전제조건 열** + **`file:line` 인용 컬럼**(advisory §6 footnote 2) + **사전 `grep -rl` 실행 결과 인용**(advisory §6 Footnote 4) | Assumption Verifier 입력 보장. 라이브러리 외부 심볼은 `extern:` 마커, 신규 파일은 `new`, 다지점은 `multi` 사용. 영향 파일 표 작성 전 `grep -rl '<대상 패턴>'` 실행 → 결과를 인용 컬럼 또는 §Scope 메모로 기재 권장 (`[pre-grep-trigger]`). | Medium+ 의무 · Low 면제 |
 | Stage 2 | Phase Contract (Phase 블록당) | 6필드: 전제조건 / **인수조건(≥2)** / 루프예산 / 롤백 / 서브에이전트 스코프(파일 목록 + 참조할 s1 섹션) / 에스컬레이트 조건. **각 인수조건 줄에 `[verify:]` 9종 태그 권장**(grep / hooks:test / tsc / vitest / cargo / lint / manual / runtime-deferred / 복합 조합) — advisory §6 footnote 2 | Medium = 필수 4 + 기본값 2(루프예산 3·에스컬레이트 표준) · High = 6 전체 의무 · Low 면제 (s1 Q12) |
 
 기본값 자동 채택 규칙(Medium 한정)은 s1 §2.2를 참조한다. 누락은 Quality Oracle / Harness Readiness Oracle 가 차단한다.
@@ -187,6 +187,8 @@ Stage 1·2 종료 시 다음을 강제한다.
   3. **외부 IO 호출 ≥ 3건** (네트워크·파일시스템 광역 스캔·MCP 호출 합).
   4. **사전 `[T]` 추정** 적용 Phase (§3 Stage 2 사전 `[T]` 추정 트리거).
 
+- **G2 위임 방식 2분기 명시** (advisory §6 Footnote 4): Phase Contract 서브에이전트 스코프 첫 줄에 `mode: subagent` / `mode: main-batch` 중 하나를 명시. `main-batch` = sed/awk 일괄 치환 또는 1~2 파일 메인 Edit. 누락 시 `[delegation-mode-trigger]` ledger 기록. Medium+ 적용 · Low 면제. 발효일 이후 신규 feature 부터.
+
 - **A2 — Self-verify footer** (general-purpose 위임만, advisory §6 Footnote 3): 위임 spec 말미에 다음 footer 표준 부착. 면제 = Explore / Plan / 특화 agent.
   - 헤더: `## Self-verify (mandatory last step)`
   - 안내: `Run these greps and include exact match counts in your reply:`
@@ -256,6 +258,22 @@ Stage 1·2 종료 시 다음을 강제한다.
   - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함, 다음 사용자 세션 입력 시 결정. 크리티컬 영향 자동 결정 금지 — §3 공통 의사결정 기준).
 - **본 PR 자체 grandfathered**: 발효일이 본 PR 머지 commit이므로 자기 적용 회귀 없음. 본 PR 작업의 위임은 자발적 dogfooding.
 - **30일 freeze 권장**: 본 PR 머지 후 design-rule.md / harness-entry SKILL / HARNESS_LEDGER_TEMPLATE.md 추가 룰 변경 지양 ("룰 9일 5회 변경" 안티패턴 재발 방지).
+
+### Footnote 4 — Subagent delegation efficiency advisory 묶음 (harness-improve-v1)
+
+- **발효일**: `<merge-commit-iso8601>` (미발효 — placeholder 상태. 본 PR 머지 commit hash ISO8601 시각 — 머지 후 1줄 수기 follow-up commit). 발효일 이후 신규 Medium+ feature s1/s2 작성부터 아래 advisory 게이트 2종 적용. Low 면제.
+- **Advisory 게이트 2종**:
+  - **G1** §3 의무 산출물 표 Stage 1 영향파일 행 — 영향 파일 표 작성 전 `grep -rl '<대상 패턴>'` 실행 결과를 s1 §영향 파일 표 인용 컬럼 또는 §Scope 메모로 기재 권장. 누락 시 `[pre-grep-trigger]` ledger Decision Log 기록 후 진행 (차단 아님).
+  - **G2** §5.4 Phase Contract 서브에이전트 스코프 — 첫 줄에 `mode: subagent` / `mode: main-batch` 명시 권장. 누락 시 `[delegation-mode-trigger]` ledger Decision Log 기록 후 진행 (차단 아님).
+- **Advisory 운영 30일**: 본 2게이트는 경고만, 차단 아님.
+- **발동 카운트 측정**: ledger 발동 태그 2종 — `[pre-grep-trigger]` · `[delegation-mode-trigger]`. 측정: `git log -- 'docs/spec/*_harness_ledger.md'` + working tree `grep -rE '\[(pre-grep|delegation-mode)-trigger\]' docs/` 병행.
+- **발효일 +30일 시점 분기**:
+  - 발동 ≥ 3 + 사용자 명시 escalate → 차단 게이트 승격 가능 (Stage 1 재진입 필수, 즉시 본문 변경 금지).
+  - 발동 0 → **auto-expire**: 룰 본문 4지점(§3 의무 산출물 표 영향파일 행 G1 문구 / §5.4 G2 위임 방식 2분기 / harness-entry SKILL item 6·7 / 본 §6 Footnote 4) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
+  - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함 — §3 크리티컬 영향 자동 결정 금지).
+- **본 PR 자체 grandfathered**: 발효일이 본 PR 머지 commit이므로 자기 적용 회귀 없음.
+- **30일 freeze 권장**: 본 PR 머지 후 design-rule.md / harness-entry SKILL 추가 룰 변경 지양.
+- **출처**: `docs/harness/SUBAGENT_DELEGATION_GUIDE.md` §2·§3 비용 분석.
 
 <!-- §6-UNFIRED-END -->
 
