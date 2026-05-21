@@ -33,3 +33,5 @@ dist-ssr
 # Local-build release pipeline staging area (scripts/release-local.mjs)
 tmp
 
+docs/harness/dashboard.html
+

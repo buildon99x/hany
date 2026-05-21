@@ -25,14 +25,14 @@ Harness Project - Hany
 - `docs/architecture.md` auto-regenerates via pre-commit hook (`scripts/generate-architecture.sh`). Design docs live in `docs/`.  `docs/.archive`는 무시(legacy).
 
 ## Harness
-모든 feature 변경은 `docs/harness/HARNESS_OPERATING_PLAYBOOK.md` 진입. Medium+ tier는 `/harness-start {feat-name}` 필수 — Decision Ledger(`docs/feat_{name}_harness_ledger.md`) 초기화 + Phase 오케스트레이션 + 완료 후 Retrospective. 용어는 `docs/harness/GLOSSARY.md`.
+모든 feature 변경은 `docs/harness/HARNESS_OPERATING_PLAYBOOK.md` 진입. Medium+ tier는 `/harness-start {feat-name}` 필수 — Decision Ledger(`docs/spec/{name}_harness_ledger.md`) 초기화 + Phase 오케스트레이션 + 완료 후 Retrospective. 용어는 `docs/harness/GLOSSARY.md`.
 
 **Hooks 동작 요약**: `PreToolUse(Bash)` destructive/force-push deny, `PreToolUse(Edit|Write)` 프라이버시 가드, `Stop` 필수 harness 문서 검증. 전체 인벤토리·skills 목록·세부 동작은 `docs/harness/README.md`. 검증 `npm run hooks:test`. Strict mode `PIXEL_HORIZON_STRICT_STOP=1`.
 
 **Non-negotiables** (SessionStart hook이 매 세션 주입, 여기에도 명시): aggregate-only 입력 · 프라이버시 스크러버 · 라이프사이클 정리 · 영속 스키마/마이그레이션 증거+롤백 · loop budget (동일 실패 auto-fix 3회 / 무변경 rerun 2회 도달 시 stop & ask).
 
 ## Design Workflow
-복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/feat_{feat-name}_s{N}.md`.
+복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/spec/{feat-name}_s{N}.md`.
 
 **Harness 슬래시 커맨드**: `/harness-start {feat-name}` (Medium+ 피처 실행) · `/harness-maintain` (harness 자기 수정) · `/harness-loop` (GitHub 이슈 자율 워크 사이클, 사용자 명시 호출 한정).
 

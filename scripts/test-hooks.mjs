@@ -88,6 +88,11 @@ expectContains(
   "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
 );
 expectContains(
+  "prompt referencing docs/spec/ path injects context",
+  run("user_prompt_spec_path", [hooks("user_prompt_harness_context.mjs")], j({ hook_event_name: "UserPromptSubmit", prompt: "update docs/spec/myfeature_s1.md" })),
+  "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
+);
+expectContains(
   "Korean 하네스 keyword injects context",
   run("user_prompt_ko", [hooks("user_prompt_harness_context.mjs")], j({ hook_event_name: "UserPromptSubmit", prompt: "하네스 구조를 평가해줘" })),
   "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
@@ -303,9 +308,17 @@ expectContains(
   run(
     "post_s1_trigger",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: "docs/feat_test-feat_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
+    j({ tool_input: { file_path: "docs/spec/test-feat_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
   ),
   "Quality Oracle",
+);
+expectEmpty(
+  "docs/feat_ s1 path does not trigger Quality Oracle (legacy path)",
+  run(
+    "post_s1_feat_no_trigger",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: "docs/feat_myfeature_s1.md", content: "## Context Carry\n| 항목 | 결정 |" } }),
+  ),
 );
 expectEmpty(
   "non-feat _s1 file does not trigger Quality Oracle",
@@ -328,9 +341,17 @@ expectContains(
   run(
     "post_s2_trigger",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: "docs/feat_test-feat_s2.md", content: "## Phase A\n전제조건:" } }),
+    j({ tool_input: { file_path: "docs/spec/test-feat_s2.md", content: "## Phase A\n전제조건:" } }),
   ),
   "Harness Readiness Oracle",
+);
+expectEmpty(
+  "docs/feat_ s2 path does not trigger Harness Readiness Oracle (legacy path)",
+  run(
+    "post_s2_feat_no_trigger",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: "docs/feat_myfeature_s2.md", content: "## Phase A\n전제조건:" } }),
+  ),
 );
 expectEmpty(
   "generic design doc does not trigger s2 Oracle",
@@ -347,7 +368,7 @@ expectEmpty(
   run("stop_present", [hooks("stop_exit_check.mjs")], ""),
 );
 {
-  const tempLedger = resolve(repoRoot, "docs/feat_test-retro-check_harness_ledger.md");
+  const tempLedger = resolve(repoRoot, "docs/spec/test-retro-check_harness_ledger.md");
   writeFileSync(tempLedger, "# Test Ledger\n");
   try {
     expectContains(
@@ -364,7 +385,7 @@ expectEmpty(
   run("stop_no_ledger", [hooks("stop_exit_check.mjs")], ""),
 );
 {
-  const tempLedger3 = resolve(repoRoot, "docs/feat_test-inprogress_harness_ledger.md");
+  const tempLedger3 = resolve(repoRoot, "docs/spec/test-inprogress_harness_ledger.md");
   writeFileSync(
     tempLedger3,
     "# Test Ledger\n\n## Phase Status\n| Phase | 상태 | 완료 커밋 |\n|---|---|---|\n| Phase 1 | ✅ 완료 | abc123 |\n| Phase 2 | 🔄 진행 중 | — |\n",
@@ -504,6 +525,75 @@ console.log("pre_tool_effort_collect");
     j({ tool_input: { command: 'git commit -m "Ledger: Phase A0B1 완료"' } }),
   );
   expectEmpty("4-char phase id matches pattern → noop (no ledger)", r7);
+
+  // Case 8 (positive, path migration): ledger at docs/spec/<name>_harness_ledger.md → hook finds and runs script.
+  // Case 9 (negative, regression guard): ledger only at docs/feat_*_harness_ledger.md (legacy) → hook does NOT find.
+  const { mkdtempSync, symlinkSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const setupTmpRepo = () => {
+    const dir = mkdtempSync(resolve(tmpdir(), "effort-path-"));
+    spawnSync("git", ["init", "-q", "-b", "main"], { cwd: dir });
+    spawnSync("git", ["config", "user.email", "t@t.t"], { cwd: dir });
+    spawnSync("git", ["config", "user.name", "t"], { cwd: dir });
+    spawnSync("git", ["config", "commit.gpgsign", "false"], { cwd: dir });
+    spawnSync("git", ["config", "gpg.format", "openpgp"], { cwd: dir });
+    spawnSync("git", ["commit", "-q", "--allow-empty", "--no-gpg-sign", "-m", "init"], { cwd: dir });
+    mkdirSync(resolve(dir, "scripts/lib"), { recursive: true });
+    symlinkSync(resolve(repoRoot, "scripts/harness-effort-collect.mjs"), resolve(dir, "scripts/harness-effort-collect.mjs"));
+    symlinkSync(resolve(repoRoot, "scripts/lib/transcript-adapter.mjs"), resolve(dir, "scripts/lib/transcript-adapter.mjs"));
+    symlinkSync(resolve(repoRoot, "scripts/lib/scrubber.mjs"), resolve(dir, "scripts/lib/scrubber.mjs"));
+    return dir;
+  };
+  const ledgerContent = "# x\n| 1 | A — test | 🔲 미시작 | — |\n<!-- effort:auto:begin -->\n<!-- effort:auto:end -->\n";
+  const commitCmd = j({ tool_input: { command: 'git commit -m "feat(x): Phase A\n\nLedger: Phase A 완료"' } });
+
+  // Case 8: docs/spec/ path → hook finds ledger.
+  {
+    const dir = setupTmpRepo();
+    mkdirSync(resolve(dir, "docs/spec"), { recursive: true });
+    const ledger = resolve(dir, "docs/spec/x_harness_ledger.md");
+    writeFileSync(ledger, ledgerContent);
+    const res = run(
+      "effort_hook_new_path",
+      [hooks("pre_tool_effort_collect.mjs")],
+      commitCmd,
+      { PIXEL_HORIZON_REPO_ROOT: dir, PIXEL_HORIZON_EFFORT_PROJECTS_DIR: resolve(dir, "noproj") },
+    );
+    const out = readFileSync(ledger, "utf8");
+    if (res.code === 0 && /\| A \| n\/a \|/.test(out)) {
+      passed++;
+      console.log("  ok  docs/spec/<name>_harness_ledger.md → hook finds and script populates n/a row");
+    } else {
+      failed++;
+      console.log("  FAIL docs/spec/ ledger not found by hook");
+      console.log(`       exit=${res.code} stderr=${res.stderr.slice(0, 200)} out=${out.slice(0, 200)}`);
+    }
+    rmSync(dir, { recursive: true, force: true });
+  }
+
+  // Case 9: legacy docs/feat_*_harness_ledger.md only → hook does NOT find (regression guard).
+  {
+    const dir = setupTmpRepo();
+    mkdirSync(resolve(dir, "docs"), { recursive: true });
+    const ledger = resolve(dir, "docs/feat_x_harness_ledger.md");
+    writeFileSync(ledger, ledgerContent);
+    const res = run(
+      "effort_hook_legacy_path",
+      [hooks("pre_tool_effort_collect.mjs")],
+      commitCmd,
+      { PIXEL_HORIZON_REPO_ROOT: dir, PIXEL_HORIZON_EFFORT_PROJECTS_DIR: resolve(dir, "noproj") },
+    );
+    const out = readFileSync(ledger, "utf8");
+    if (res.code === 0 && !/\| A \| n\/a \|/.test(out)) {
+      passed++;
+      console.log("  ok  legacy docs/feat_*_harness_ledger.md not matched (regression guard)");
+    } else {
+      failed++;
+      console.log("  FAIL legacy path incorrectly matched");
+      console.log(`       exit=${res.code} out=${out.slice(0, 200)}`);
+    }
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 console.log("_emit helpers");

@@ -26,8 +26,8 @@ if (missing.length > 0) {
 // Collect retrospective warnings (never block — continue to strict-mode check).
 const retroWarnings = [];
 try {
-  const docsEntries = readdirSync("docs");
-  const ledgers = docsEntries.filter((f) => /^feat_.+_harness_ledger\.md$/.test(f));
+  const docsEntries = readdirSync("docs/spec").map((f) => `spec/${f}`);
+  const ledgers = docsEntries.filter((f) => /^spec\/.+_harness_ledger\.md$/.test(f));
   const missingRetro = ledgers.filter((ledger) => {
     let content = "";
     try {
@@ -42,10 +42,10 @@ try {
     return !existsSync(`docs/${retroName}`);
   });
   if (missingRetro.length > 0) {
-    const names = missingRetro.map((f) => f.replace("_harness_ledger.md", "")).join(", ");
+    const names = missingRetro.map((f) => f.replace("spec/", "").replace("_harness_ledger.md", "")).join(", ");
     retroWarnings.push(
       `Harness exit check (warn): Ledger 완료됐지만 Retrospective 미작성: ${names}. ` +
-        `docs/feat_{name}_harness_retrospective.md 작성으로 L4 피드백 루프 닫기 권장.`,
+        `docs/spec/{name}_harness_retrospective.md 작성으로 L4 피드백 루프 닫기 권장.`,
     );
   }
 } catch {

@@ -13,7 +13,7 @@ Use this playbook for every feature or harness change. It turns the plan into a 
 
 Medium+ 피처는 구현 단계 진입 전 `/harness-start {feat-name}` 을 실행한다.
 
-- `docs/feat_{feat-name}_s1.md` + `_s2.md` 존재 및 Readiness Validation 통과 확인 (`.claude/skills/harness-entry/SKILL.md` 참조).
+- `docs/spec/{feat-name}_s1.md` + `_s2.md` 존재 및 Readiness Validation 통과 확인 (`.claude/skills/harness-entry/SKILL.md` 참조).
 - Validation 실패 시 누락 항목을 해소한 뒤 재실행. 통과 전까지 Phase 실행 불가.
 - Low 티어는 Step 0 생략, Step 1로 바로 진입.
 
@@ -60,7 +60,7 @@ Medium+ 피처는 구현 단계 진입 전 `/harness-start {feat-name}` 을 실�
 - `npm run lint:css` 위반 0 (CSS 변경 시 — advisory 단계에서도 핸드오프 전 확인).
 
 ## 7. Retrospective (Medium+ 피처)
-- Harness Phase 전체 완료 후 `docs/feat_{feat-name}_harness_retrospective.md` 를 `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` 기반으로 작성.
+- Harness Phase 전체 완료 후 `docs/spec/{feat-name}_harness_retrospective.md` 를 `docs/harness/HARNESS_RETROSPECTIVE_TEMPLATE.md` 기반으로 작성.
 - 기록 내용: 즉흥 결정 목록 / 누락된 ATK 항목 / Phase Contract 공백 / 루프예산 사용량 / 인수조건 충족도 / Scope Discovery 충돌 / **Effort 분석 (Effort Ledger 마킹 대상 Phase 의 요인 카테고리 6종 + follow-up)** / 다음 s1 템플릿 개선 제안.
 - Retrospective 파일을 Decision Ledger 최종 커밋과 함께 번들.
 - Low 티어는 Step 7 생략.
@@ -120,6 +120,9 @@ Stop and ask for user direction when:
 
 ## Subagent Delegation (advisory — design-rule.md §6 Footnote 3)
 general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용. 세부는 `.claude-context/design-rule.md` §5.4 참조. 30일 advisory · 차단 아님 · trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) 으로 발동 카운트.
+
+## Delegation Efficiency (advisory — design-rule.md §6 Footnote 4)
+s1 §영향 파일 표 작성 전 `grep -rl '<대상 패턴>'` 실행 → 결과 인용 권장 (`[pre-grep-trigger]`). s2 Phase Contract 서브에이전트 스코프 첫 줄에 `mode: subagent` / `mode: main-batch` 명시 권장 (`[delegation-mode-trigger]`). Medium+ 적용 · Low 면제 · 30일 advisory · 차단 아님.
 
 ## Done Definition
 A task is done when the applicable tier evidence exists, privacy scrubber passes, unresolved risks are named, and the next owner can understand the result from the Feature Quality Note without reconstructing the work from chat history.

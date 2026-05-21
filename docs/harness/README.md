@@ -38,7 +38,8 @@ portability: project-specific
 
 ## Decision Ledger (런타임 생성)
 
-피처별 자동 생성: `docs/feat_{feat-name}_harness_ledger.md`. Phase Status / Decision Log / Escalation Log / Scope Discovery Log 포함. `/harness-start` 가 초기화·재개.
+피처별 자동 생성: `docs/spec/{feat-name}_harness_ledger.md`. Phase Status / Decision Log / Escalation Log / Scope Discovery Log 포함. `/harness-start` 가 초기화·재개.
+피처 목록 인덱스: `docs/spec/INDEX.md`
 
 ## Non-Negotiables
 
@@ -50,4 +51,4 @@ portability: project-specific
 
 ## 유지보수 메모
 
-- `post_edit_quality_gate.mjs` 의 s1/s2 `.md` 분기는 `docs/feat_*_s[12].md` 패턴 전용. 동일 명명 패턴 신설 시 `scripts/test-hooks.mjs` 에 회귀 케이스 추가 (s2 §5 R5).
+- `post_edit_quality_gate.mjs` 의 s1/s2 `.md` 분기는 `docs/spec/*_s[12].md` 패턴 전용. 동일 명명 패턴 신설 시 `scripts/test-hooks.mjs` 에 회귀 케이스 추가 (s2 §5 R5).

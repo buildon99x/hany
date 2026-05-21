@@ -64,7 +64,7 @@ abort 시 stderr 단일 라인 + 종료 코드 1.
 1. 라벨 `ux`/`design` 또는 경로 `src/styles/|src/ui/|src/pages/` → `harness:frontend`
 2. 경로 `.claude/`/`docs/harness/`/`.github/` → `harness:harness`
 3. body 에 `ideation`/`아이데이션`/`brainstorm`/`초안` → `harness:stage-0`
-4. body 에 `docs/feat_*_s0.md` 참조 → `harness:stage-1`
+4. body 에 `docs/spec/*_s0.md` 참조 → `harness:stage-1`
 5. 기본 → `harness:stage-0`
 
 **feat-name** (CC-3 title-based):

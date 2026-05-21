@@ -12,7 +12,7 @@ description: Staged planning workflow — Stage 진입
 
 1. `$ARGUMENTS` 를 `.claude-context/design-rule.md` §2.3 입력 파싱 규칙에 따라 `{stage_number}` / `{feat-name}` 으로 분해·정규화한다.
 2. `.claude-context/design-rule.md` 를 `Read` 로 로드해 §3(Stage 정의)·§4.1(이전 Stage 자동 복원)·§4.3(모드 정책) 규칙을 따른다.
-3. 동일 feat의 기존 산출물(`docs/feat_{feat-name}_s*.md`)을 점검 후 §4.1 절차대로 복원/경고/진행 여부를 사용자와 합의한다.
+3. 동일 feat의 기존 산출물(`docs/spec/{feat-name}_s*.md`)을 점검 후 §4.1 절차대로 복원/경고/진행 여부를 사용자와 합의한다.
 4. **계획 모드로 진입**해 대화를 시작한다(§4.3 기본값). 첫 응답에 모드 진입 사실과 허용·금지 도구 요지를 한 줄로 명시한다.
 5. 계획 모드 동안에는 §4.3 "수락 확인 생략 원칙" 에 따라 단계별 진행 동의("여기까지 OK?" 등)를 묻지 않고 stage 작업을 연속 수행한다. **수락은 `/stage-end` 가 일괄 대체**한다.
 6. `Write`/`Edit`/상태 변경 `Bash`/커밋·푸시 등 편집 작업은 §4.3 전환 트리거(사용자 명시 요청 또는 `/stage-end`) 가 발생한 뒤에만 수행한다.

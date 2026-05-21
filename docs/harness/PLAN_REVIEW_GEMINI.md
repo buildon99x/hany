@@ -10,7 +10,7 @@ Third-party LLM review of plan/design documents. Implemented as the
 Code as a single tool: `review_plan({ path, focus? })`.
 
 ## When to use
-- After a Stage 1/2 design doc (`docs/feat_*_s{1,2}.md`) is drafted, before
+- After a Stage 1/2 design doc (`docs/spec/*_s{1,2}.md`) is drafted, before
   handoff to implementation.
 - After Claude finishes a plan in Plan Mode (`/root/.claude/plans/*.md`) and
   you want a second-LLM sanity check before approving.

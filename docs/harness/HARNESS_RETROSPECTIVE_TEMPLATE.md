@@ -8,7 +8,7 @@ deprecated: trigger checklist moved to HANDOFF_TEMPLATE.md §10 — full retrosp
 
 # Harness Retrospective Template
 
-> 사용법: Harness Phase 전체 완료 후 `docs/feat_{feat-name}_harness_retrospective.md`로 복사·작성.
+> 사용법: Harness Phase 전체 완료 후 `docs/spec/{feat-name}_harness_retrospective.md`로 복사·작성.
 > 목적: 이번 피처에서 발생한 암묵지 누락·Phase Contract 공백·프로세스 개선점을 기록하여 다음 s1 작성 품질에 반영 (L4 피드백 루프).
 
 ---
@@ -18,7 +18,7 @@ deprecated: trigger checklist moved to HANDOFF_TEMPLATE.md §10 — full retrosp
 - **feat-name**: `{feat-name}`
 - **티어**: Low / Medium / High
 - **완료일**: YYYY-MM-DD
-- **Ledger 경로**: `docs/feat_{feat-name}_harness_ledger.md`
+- **Ledger 경로**: `docs/spec/{feat-name}_harness_ledger.md`
 
 ---
 
