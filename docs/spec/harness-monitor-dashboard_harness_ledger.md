@@ -17,7 +17,7 @@ portability: project-specific
 | # | Phase | 상태 | 커밋 | 비고 |
 |---|---|---|---|---|
 | 1 | A — 스크립트 구현 + package.json + .gitignore | ✅ 완료 | 3911b65 | |
-| 2 | B — advisory 게이트 의도적 누락→발동→복구 | ✅ 완료 | TBD | |
+| 2 | B — advisory 게이트 의도적 누락→발동→복구 | ✅ 완료 | 2a8ba6e | |
 
 상태 기호: 🔲 미시작 · 🟡 진행 · ⏸ 보류(에스컬레이션) · ✅ 완료 · ⚠️ 회귀.
 
