@@ -8,16 +8,8 @@ Harness Project - Hany
 - **모든 파일은 UTF-8 (BOM 없음)으로 저장한다.** 편집기·도구 설정과 무관하게, 새 파일 생성 및 기존 파일 수정 시 인코딩을 UTF-8로 유지한다.
 
 ## Commands
-- `npm run tauri build [-- --no-bundle]` — production build
-- `npm run typecheck` / `npx tsc --noEmit`
-- `npm test` / `npm run test:watch` — Vitest
-- `npm run lint` / `npm run lint:all` runs both.
-
 - `npm run hooks:test` — runs harness-hook cases. Must stay green before any hook/settings change.
-- `npm run release:bump` / `npm run release:local` — local release flow (see `release-local` / `release-tag` skills).
-
-
-
+- `npm run harness:effort -- --ledger <path> --phase <key> --branch <name>` — manual Effort Ledger row append (fallback for PreToolUse hook).
 
 ### TypeScript
 - `strict: true`, `noUnusedLocals`, `noUnusedParameters`. Remove unused imports.
