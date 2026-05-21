@@ -17,6 +17,7 @@ const SPEC_DIR = process.env.HARNESS_WATCH_SPEC_DIR || join(ROOT, 'docs', 'spec'
 
 const DEBOUNCE_MS = 200;
 const POLL_FALLBACK_MS = 5000;
+const TICK_MS = 1000;
 const ADVISORY_WINDOW_MS = 60 * 60 * 1000;
 const DEFAULT_LIMIT = 5;
 
@@ -26,6 +27,13 @@ const TRACKED_TAGS = [
   'verify-tag',
   'subagent-verify',
 ];
+
+const ANSI_BRIGHT_GREEN = '\x1b[92m';
+const ANSI_RESET = '\x1b[0m';
+
+function hi(s, ascii) {
+  return ascii ? s : `${ANSI_BRIGHT_GREEN}${s}${ANSI_RESET}`;
+}
 
 function parseArgs(argv) {
   const opts = {
@@ -195,7 +203,7 @@ function render(state, opts) {
   const lines = [];
 
   const wallclock = formatHHMMSS(new Date(state.now));
-  lines.push(`harness-watch · ${state.branch} · ${wallclock}`);
+  lines.push(`harness-watch · ${hi(state.branch, ascii)} · ${hi(wallclock, ascii)}`);
   lines.push('');
 
   const visible = state.features.slice(0, opts.limit);
@@ -210,11 +218,11 @@ function render(state, opts) {
         lines.push(`  ${badge} ${f.featName} parse error`);
         continue;
       }
-      const phase = f.activePhase
-        ? `${f.activePhase.title.split('—')[0].trim()} ${ascii ? statusBadge(f.activePhase.emoji) : f.activePhase.emoji}`
-        : 'no phase';
+      const phaseId = f.activePhase ? f.activePhase.title.split('—')[0].trim() : '';
+      const phaseBadge = f.activePhase ? (ascii ? statusBadge(f.activePhase.emoji) : f.activePhase.emoji) : '';
+      const phase = f.activePhase ? `${hi(phaseId, ascii)} ${phaseBadge}` : 'no phase';
       const updated = relativeFromMs(f.mtimeMs, state.now);
-      lines.push(`  ${ascii ? '>' : '▸'} ${f.featName} (${f.tier || 'n/a'}) | ${phase} | ${updated}`);
+      lines.push(`  ${ascii ? '>' : '▸'} ${hi(f.featName, ascii)} (${f.tier || 'n/a'}) | ${phase} | ${updated}`);
       if (opts.detail) {
         if (f.decisionLastRow) {
           lines.push(`      decision: ${truncate(f.decisionLastRow.decision, 70)}`);
@@ -249,7 +257,7 @@ function render(state, opts) {
 
   lines.push('Last commit');
   if (state.lastCommit) {
-    lines.push(`  ${state.lastCommit.sha7} ${truncate(state.lastCommit.subject, 60)} (${state.lastCommit.when})`);
+    lines.push(`  ${hi(state.lastCommit.sha7, ascii)} ${truncate(state.lastCommit.subject, 60)} (${state.lastCommit.when})`);
   } else {
     lines.push('  n/a');
   }
@@ -318,12 +326,14 @@ async function main() {
   let watcher = null;
   let pollTimer = null;
   let debounceTimer = null;
+  let tickTimer = null;
 
   const cleanup = (code = 0) => {
     if (cleaned) return;
     cleaned = true;
     if (debounceTimer) clearTimeout(debounceTimer);
     if (pollTimer) clearInterval(pollTimer);
+    if (tickTimer) clearInterval(tickTimer);
     if (watcher) { try { watcher.close(); } catch { /* ignore */ } }
     if (process.stdin.isTTY && process.stdin.setRawMode) {
       try { process.stdin.setRawMode(false); } catch { /* ignore */ }
@@ -376,6 +386,8 @@ async function main() {
       if (key === '?') { opts.detail = !opts.detail; draw(); return; }
     });
   }
+
+  tickTimer = setInterval(draw, TICK_MS);
 
   draw();
 }
