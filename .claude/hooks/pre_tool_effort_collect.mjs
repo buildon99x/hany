@@ -23,11 +23,11 @@ function extractPhase(cmd) {
 }
 
 function findActiveLedger(repoRoot, phase) {
-  const docsDir = resolve(repoRoot, "docs");
+  const docsDir = resolve(repoRoot, "docs/spec");
   if (!existsSync(docsDir)) return null;
   let entries;
   try { entries = readdirSync(docsDir); } catch { return null; }
-  const ledgers = entries.filter((f) => /^feat_.+_harness_ledger\.md$/.test(f));
+  const ledgers = entries.filter((f) => /_harness_ledger\.md$/.test(f));
   const matches = [];
   for (const f of ledgers) {
     const p = resolve(docsDir, f);
