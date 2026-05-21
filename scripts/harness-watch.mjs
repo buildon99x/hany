@@ -30,6 +30,8 @@ const TRACKED_TAGS = [
 
 const ANSI_BRIGHT_GREEN = '\x1b[92m';
 const ANSI_RESET = '\x1b[0m';
+const ALT_SCREEN_ON = '\x1b[?1049h';
+const ALT_SCREEN_OFF = '\x1b[?1049l';
 
 function hi(s, ascii) {
   return ascii ? s : `${ANSI_BRIGHT_GREEN}${s}${ANSI_RESET}`;
@@ -173,11 +175,12 @@ function gitBranch() {
 }
 
 function gitLastCommit() {
-  const r = spawnSync('git', ['log', '-1', '--pretty=format:%h\t%s\t%ar'], { cwd: ROOT, encoding: 'utf8' });
+  const r = spawnSync('git', ['log', '-1', '--pretty=format:%h\t%s\t%ct'], { cwd: ROOT, encoding: 'utf8' });
   if (r.status !== 0) return null;
-  const [sha7, subject, when] = (r.stdout || '').split('\t');
+  const [sha7, subject, ct] = (r.stdout || '').split('\t');
   if (!sha7) return null;
-  return { sha7, subject, when };
+  const ts = Number(ct) * 1000;
+  return { sha7, subject, ts: Number.isFinite(ts) ? ts : 0 };
 }
 
 function relativeFromMs(ms, now) {
@@ -257,7 +260,8 @@ function render(state, opts) {
 
   lines.push('Last commit');
   if (state.lastCommit) {
-    lines.push(`  ${hi(state.lastCommit.sha7, ascii)} ${truncate(state.lastCommit.subject, 60)} (${state.lastCommit.when})`);
+    const when = state.lastCommit.ts ? relativeFromMs(state.lastCommit.ts, state.now) : 'unknown';
+    lines.push(`  ${hi(state.lastCommit.sha7, ascii)} ${truncate(state.lastCommit.subject, 60)} (${when})`);
   } else {
     lines.push('  n/a');
   }
@@ -292,8 +296,8 @@ function truncate(s, n) {
   return s.length <= n ? s : s.slice(0, n - 1) + '…';
 }
 
-function clearScreen() {
-  process.stdout.write('\x1b[2J\x1b[H');
+function homeAndClearBelow() {
+  process.stdout.write('\x1b[H\x1b[J');
 }
 
 function hideCursor() {
@@ -327,6 +331,8 @@ async function main() {
   let pollTimer = null;
   let debounceTimer = null;
   let tickTimer = null;
+  let cachedState = null;
+  let altScreenActive = false;
 
   const cleanup = (code = 0) => {
     if (cleaned) return;
@@ -340,6 +346,10 @@ async function main() {
     }
     try { process.stdin.pause(); } catch { /* ignore */ }
     if (!opts.ascii) showCursor();
+    if (altScreenActive) {
+      try { process.stdout.write(ALT_SCREEN_OFF); } catch { /* ignore */ }
+      altScreenActive = false;
+    }
     process.exit(code);
   };
 
@@ -351,17 +361,23 @@ async function main() {
     if (err && err.code === 'EPIPE') cleanup(0);
   });
 
-  const draw = () => {
-    if (cleaned) return;
-    const state = readState();
+  const paintFromCache = () => {
+    if (cleaned || !cachedState) return;
+    cachedState.now = Date.now();
     if (!opts.ascii) hideCursor();
-    clearScreen();
-    process.stdout.write(render(state, opts));
+    homeAndClearBelow();
+    process.stdout.write(render(cachedState, opts));
+  };
+
+  const refresh = () => {
+    if (cleaned) return;
+    cachedState = readState();
+    paintFromCache();
   };
 
   const schedule = () => {
     if (debounceTimer) clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(draw, DEBOUNCE_MS);
+    debounceTimer = setTimeout(refresh, DEBOUNCE_MS);
   };
 
   try {
@@ -369,10 +385,10 @@ async function main() {
     watcher.on('error', () => {
       try { watcher.close(); } catch { /* ignore */ }
       watcher = null;
-      pollTimer = setInterval(draw, POLL_FALLBACK_MS);
+      pollTimer = setInterval(refresh, POLL_FALLBACK_MS);
     });
   } catch {
-    pollTimer = setInterval(draw, POLL_FALLBACK_MS);
+    pollTimer = setInterval(refresh, POLL_FALLBACK_MS);
   }
 
   if (process.stdin.isTTY && process.stdin.setRawMode) {
@@ -381,15 +397,20 @@ async function main() {
     process.stdin.setEncoding('utf8');
     process.stdin.on('data', key => {
       if (key === '' || key === 'q') { cleanup(0); return; }
-      if (key === 'd') { opts.detail = !opts.detail; draw(); return; }
-      if (key === 'a') { opts.ascii = !opts.ascii; draw(); return; }
-      if (key === '?') { opts.detail = !opts.detail; draw(); return; }
+      if (key === 'd') { opts.detail = !opts.detail; paintFromCache(); return; }
+      if (key === 'a') { opts.ascii = !opts.ascii; paintFromCache(); return; }
+      if (key === '?') { opts.detail = !opts.detail; paintFromCache(); return; }
     });
   }
 
-  tickTimer = setInterval(draw, TICK_MS);
+  if (process.stdout.isTTY) {
+    process.stdout.write(ALT_SCREEN_ON);
+    altScreenActive = true;
+  }
 
-  draw();
+  tickTimer = setInterval(paintFromCache, TICK_MS);
+
+  refresh();
 }
 
 main().catch(err => {
