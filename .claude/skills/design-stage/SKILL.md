@@ -29,6 +29,13 @@ description: Stage 기반 설계 워크플로우 (Stage 0 아이데이션 → 1 
 ## 슬래시 커맨드와의 관계
 `/stage-start`, `/stage-end` 와 완전히 동일한 플로우. 슬래시 커맨드 진입과 자연어 진입의 동작이 달라서는 안 된다.
 
+## Planning Rules (Stage 1·2 활성)
+
+- **계획(Plan)에 코드를 절대 포함하지 않는다.** 파일 경로, 수정 방향, 로직 설명만 서술. 코드는 구현 단계에서만.
+- 파일별 변경 사항은 1~2줄로 요약. 불필요한 반복 금지.
+- 좋은 예: `src/state.ts — getLevel() 반환값에 rebirth 보정 로직 추가`
+- 나쁜 예: 위 항목에 실제 함수 구현 코드까지 포함
+
 ## 주의
-- `CLAUDE.md` "Planning Rules"(코드 금지, 1~2줄 요약)는 Stage 1·2 동안 항상 활성.
+- 본 스킬 §Planning Rules 는 Stage 1·2 동안 항상 활성.
 - `docs/.archive` 는 읽기 금지(프로젝트 설정 준수).

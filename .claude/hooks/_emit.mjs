@@ -11,6 +11,12 @@ export function emitAdvisory(hookEventName, additionalContext) {
   process.exit(0);
 }
 
+// PreCompact does not support hookSpecificOutput — use top-level systemMessage instead.
+export function emitSystemMessage(systemMessage) {
+  process.stdout.write(JSON.stringify({ systemMessage }));
+  process.exit(0);
+}
+
 // For PreToolUse hooks that need a deny/ask permission decision.
 export function emitDecision(permissionDecision, permissionDecisionReason) {
   process.stdout.write(

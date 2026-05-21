@@ -111,15 +111,20 @@ expectEmpty(
 );
 
 console.log("session_status_snapshot");
-expectJsonField(
-  "echoes hook_event_name",
+expectContains(
+  "PreCompact emits top-level systemMessage (not hookSpecificOutput)",
   run("session_pre", [hooks("session_status_snapshot.mjs")], j({ hook_event_name: "PreCompact" })),
-  ["hookSpecificOutput", "hookEventName"],
-  "PreCompact",
+  '"systemMessage"',
 );
 expectJsonField(
-  "defaults to SessionStart on empty",
+  "defaults to SessionStart on empty → hookSpecificOutput",
   run("session_empty", [hooks("session_status_snapshot.mjs")], ""),
+  ["hookSpecificOutput", "hookEventName"],
+  "SessionStart",
+);
+expectJsonField(
+  "SessionStart emits hookSpecificOutput (not systemMessage)",
+  run("session_start", [hooks("session_status_snapshot.mjs")], j({ hook_event_name: "SessionStart" })),
   ["hookSpecificOutput", "hookEventName"],
   "SessionStart",
 );
@@ -540,6 +545,11 @@ console.log("_emit helpers");
   expectJsonField("emitDecision writes permissionDecision", decisionResult, ["hookSpecificOutput", "permissionDecision"], "deny");
   expectJsonField("emitDecision writes permissionDecisionReason", decisionResult, ["hookSpecificOutput", "permissionDecisionReason"], "blocked reason");
   expectJsonField("emitDecision sets hookEventName to PreToolUse", decisionResult, ["hookSpecificOutput", "hookEventName"], "PreToolUse");
+
+  const sysProbe = `import { emitSystemMessage } from "${emitPath}"; emitSystemMessage("hello system");`;
+  const sysResult = run("emit_system_message", ["-e", sysProbe], "");
+  expectJsonField("emitSystemMessage writes top-level systemMessage", sysResult, ["systemMessage"], "hello system");
+  expectJsonField("emitSystemMessage does not set hookSpecificOutput", sysResult, ["hookSpecificOutput"], undefined);
 }
 
 console.log("_config loader");

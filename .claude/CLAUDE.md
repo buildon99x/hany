@@ -32,22 +32,20 @@ Harness Project - Hany
 - CI: `tsc --noEmit` (advisory) (blocking, 8-stage strict).
 - `docs/architecture.md` auto-regenerates via pre-commit hook (`scripts/generate-architecture.sh`). Design docs live in `docs/`.  `docs/.archive`는 무시(legacy).
 
-## Harness
-모든 feature 변경은 `docs/harness/HARNESS_OPERATING_PLAYBOOK.md` 진입. Medium+ tier는 `/harness-start {feat-name}` 필수 — Decision Ledger(`docs/spec/{name}_harness_ledger.md`) 초기화 + Phase 오케스트레이션 + 완료 후 Retrospective. 용어는 `docs/harness/GLOSSARY.md`.
+## Harness (opt-in)
+슬래시 커맨드로만 활성화됨. 명시 호출 없이는 강제 진입하지 않는다.
 
-**Hooks 동작 요약**: `PreToolUse(Bash)` destructive/force-push deny, `PreToolUse(Edit|Write)` 프라이버시 가드, `Stop` 필수 harness 문서 검증. 전체 인벤토리·skills 목록·세부 동작은 `docs/harness/README.md`. 검증 `npm run hooks:test`. Strict mode `PIXEL_HORIZON_STRICT_STOP=1`.
+| 커맨드 | 용도 |
+|---|---|
+| `/harness-start {feat-name}` | Medium+ 피처 실행 |
+| `/harness-maintain` | Harness 자기 수정 |
+| `/harness-loop` | GitHub 이슈 자율 워크 사이클 (명시 호출 한정) |
 
-**Non-negotiables** (SessionStart hook이 매 세션 주입, 여기에도 명시): aggregate-only 입력 · 프라이버시 스크러버 · 라이프사이클 정리 · 영속 스키마/마이그레이션 증거+롤백 · loop budget (동일 실패 auto-fix 3회 / 무변경 rerun 2회 도달 시 stop & ask).
+훅·Non-negotiables·체크리스트 상세: `docs/harness/README.md`.
 
 ## Design Workflow
-복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/spec/{feat-name}_s{N}.md`.
-
-## Planning Rules (사용자 지침)
-- **계획(Plan)에 코드를 절대 포함하지 않는다.** 파일 경로, 수정 방향, 로직 설명만 서술. 코드는 구현 단계에서만.
-- 계획은 간결하게: 파일별 변경 사항을 1~2줄로 요약. 불필요한 반복 금지.
-- 좋은 예: `src/state.ts — getLevel() 반환값에 rebirth 보정 로직 추가`
-- 나쁜 예: 위 항목에 실제 함수 구현 코드까지 포함
-- 위 규칙은 Stage 1·2 동안 그대로 활성 — Design Workflow의 하위 규칙으로 작동.
+단계적 기능 설계는 `design-stage` 스킬(`.claude/skills/design-stage/SKILL.md`)로 위임.
+슬래시: `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물: `docs/spec/{feat-name}_s{N}.md`.
 
 ## Token optimization (AI 지침)
 탐색은 `docs/architecture.md` 우선(Glob/Grep 반복 최소화) · 대규모 파일은 offset/limit으로 부분 읽기 · `dispatch_skill!` 매크로 사용(20-arm match 직접 작성 금지) · 진행 상황 출력 최소화, 결과만 보고.

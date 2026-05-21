@@ -1,6 +1,6 @@
 // @portable
 import { readFileSync } from "node:fs";
-import { emitAdvisory } from "./_emit.mjs";
+import { emitAdvisory, emitSystemMessage } from "./_emit.mjs";
 
 const raw = readFileSync(0, "utf8");
 let hookName = "SessionStart";
@@ -30,4 +30,8 @@ Non-negotiables:
 - Recovery/migration/security review when touched.
 - Loop budget before repeated automatic fixes.`;
 
-emitAdvisory(hookName, context);
+if (hookName === "PreCompact") {
+  emitSystemMessage(context);
+} else {
+  emitAdvisory(hookName, context);
+}

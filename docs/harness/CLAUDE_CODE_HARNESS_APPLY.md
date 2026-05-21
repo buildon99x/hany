@@ -39,7 +39,7 @@ When starting a new feature, Claude Code should:
 - `Stop`:
   - `stop_exit_check.mjs` — blocks only when required harness documents are missing by default. Warns when a Ledger is complete but its Retrospective is missing. Set `PIXEL_HORIZON_STRICT_STOP=1` to also block completion while changed files remain and force a final evidence/handoff check.
   - `cost_ledger.mjs` — inactive in normal sessions. Activated only when `HARNESS_LOOP_CYCLE_ID` is set (the harness-loop autonomous worker). Aggregates per-cycle token usage from session JSONL, computes USD estimate using `harness-loop.config.json` model pricing, and appends a record to `~/.claude/cache/harness-loop/cost-ledger.jsonl`.
-- `PreCompact` (`session_status_snapshot.mjs`): reinjects harness context before compaction.
+- `PreCompact` (`session_status_snapshot.mjs`): reinjects harness context before compaction using top-level `systemMessage` (PreCompact does not support `hookSpecificOutput`).
 - `SubagentStop` (`subagent_stop_merge.mjs`): advisory by default. Set `PIXEL_HORIZON_STRICT_STOP=1` to require subagent handoff details before the parent task continues.
 
 ## Portability — 이식 시 교체 대상

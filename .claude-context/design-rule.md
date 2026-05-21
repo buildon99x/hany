@@ -6,7 +6,7 @@
 ## 1. 목적
 - 복잡한 기능을 "아이데이션 → 기능 설계 → 구현 계획"의 3단계로 나누어 일관된 포맷으로 기록한다.
 - 각 단계 산출물을 `docs/spec/{feat-name}_s{N}.md` 로 저장해 리뷰·롤백이 가능하도록 한다.
-- `CLAUDE.md`의 기존 "Planning Rules"(코드 금지, 1~2줄 요약)를 Stage 1·2의 하위 규칙으로 흡수한다.
+- Planning Rules(코드 금지, 1~2줄 요약)는 `design-stage` 스킬(`.claude/skills/design-stage/SKILL.md`) §Planning Rules 로 이관됨. 본 파일은 절차 단일 소스.
 
 ## 2. 트리거
 
