@@ -32,8 +32,8 @@ if (harnessSelfMod) {
     "Harness self-maintenance mode (path matched .claude/hooks · .claude/settings.json · .claude-context · .claude/skills · .claude/commands · docs/harness):\n" +
       "- Apply docs/harness/HARNESS_SELF_MAINTENANCE.md before continuing — this edit affects every future session or feature workflow.\n" +
       "- Hook edits (.claude/hooks/**) require `npm run hooks:test` to pass before commit, with new positive + negative cases for any changed branch.\n" +
-      "- design-rule.md changes must use §6 advisory placement; do not promote advisory gates to blocking without §6 procedure.\n" +
-      "- Same-commit sync: Playbook ↔ design-rule.md ↔ CLAUDE_CODE_HARNESS_APPLY.md ↔ README ↔ Glossary as relevant.\n" +
+      "- design-stage SKILL changes must use §6 advisory placement; do not promote advisory gates to blocking without §6 procedure.\n" +
+      "- Same-commit sync: Playbook ↔ design-stage SKILL ↔ CLAUDE_CODE_HARNESS_APPLY.md ↔ README ↔ Glossary as relevant.\n" +
       "- Loop budget: stop & ask if the same harness rule is touched 5+ times within 9 days (anti-pattern lesson 2026-05-09).",
   );
 }

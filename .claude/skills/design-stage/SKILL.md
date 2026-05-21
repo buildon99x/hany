@@ -222,7 +222,7 @@ Stage 1·2 종료 시 다음을 강제한다.
 
 - **E1 — Subagent Invocations 1행 기입** (위임 완료 직후, advisory §6 Footnote 3): ledger `## Subagent Invocations` 표에 1행 기입. Phase 종료/`/stage-end` 일괄 금지. 컬럼 = `Date / Phase / Agent ID / task / duration_ms / total_tokens / tool_uses / status`. `status` ∈ {`DONE` / `PARTIAL` / `fallback-to-main`} 이 partial 상태를 이미 포함하므로 별도 `partial?` 컬럼 부재. task-notification 미수신값 = `unknown` 문자열 (skip/추정 금지). 위반 = 1행 누락 → `[subagent-metrics-trigger]` (§6 Footnote 3).
 
-- **Privacy scrub** (ledger `task` / Self-verify footer 작성 시, non-negotiable "Privacy scrubber" 직결): user dir 절대경로 (`/Users/<name>/...`, `/home/<name>/...`) · 원문 사용자 입력 · 외부 토큰/API 키 · 화면 캡처 경로 인용 금지. 상대 경로 + symbol 명 + 동작 동사만 기입 (예: ✅ `add Self-verify footer to design-rule §5.4` / ❌ `grep '/Users/john/secrets.env' for API_KEY`). 위반 = PII/path 노출 감지 → `[subagent-privacy-trigger]` (§6 Footnote 3).
+- **Privacy scrub** (ledger `task` / Self-verify footer 작성 시, non-negotiable "Privacy scrubber" 직결): user dir 절대경로 (`/Users/<name>/...`, `/home/<name>/...`) · 원문 사용자 입력 · 외부 토큰/API 키 · 화면 캡처 경로 인용 금지. 상대 경로 + symbol 명 + 동작 동사만 기입 (예: ✅ `add Self-verify footer to design-stage SKILL §5.4` / ❌ `grep '/Users/john/secrets.env' for API_KEY`). 위반 = PII/path 노출 감지 → `[subagent-privacy-trigger]` (§6 Footnote 3).
 
 - **A3 — 통합 검토 단계** (sub-agent 산출 직후, advisory §6 Footnote 5 — subagent-dispatch-tuning 제안 3): Sub-agent Dispatch Policy §통합 검토 단계 그대로. 메인 에이전트는 산출물에 대해 다음 3개 항목을 확인하고 ledger Decision Log에 검토 결과 1줄 기록.
   1. **권한 범위 벗어난 결정 포함 여부** — A1 Authority에 명시된 결정 권한 범위 밖에서 sub-agent가 결정을 내렸는지 확인.
@@ -248,7 +248,7 @@ Stage 1·2 종료 시 다음을 강제한다.
 - **발동 카운트 측정**: ledger 발동 키워드 `[work-slicing-trigger]` 태그를 `git log -- 'docs/spec/*_harness_ledger.md'` + working tree `grep -r '\[work-slicing-trigger\]' docs/` 병행 수집(미커밋 ledger 누락 회피).
 - **발효일 +30일 시점 분기**: 발동 ≥ 3건 + 사용자 명시 escalate 시 차단 게이트 승격 가능 — Stage 1 재진입을 통해서만(즉시 본문 변경 금지). 발동 0 또는 escalate 부재 시 **auto-expire = 룰 본문 4지점(§3 작업 규모 추정 sub절 / §3 Phase Contract 인수조건 표준 / §5.4 위임 1줄 / 본 §6) 수동 제거 + 검증 issue 수동 생성** (자동화 헬퍼 0).
 - **부분 폐기 PR 가능** — 그 경우 auto-expire 시점 reset 없음, 머지 일자 유지.
-- **30일 freeze 권장** (advisory · 차단 게이트 아님): 본 PR 머지 후 design-rule.md 추가 룰 변경 지양. "룰 9일 5회 변경" 안티패턴 재발 방지.
+- **30일 freeze 권장** (advisory · 차단 게이트 아님): 본 PR 머지 후 design-stage SKILL 추가 룰 변경 지양. "룰 9일 5회 변경" 안티패턴 재발 방지.
 
 ### Footnote 2 — Retrospective 기반 advisory 묶음 (harness-retrospective-base-improve)
 
@@ -267,7 +267,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - 발동 0 → **auto-expire**: 룰 본문 6지점(§3 의무 산출물 표 3행 · §3 Stage 2 사전 `[T]` 추정 · §5.4 위임 단일 임계 문구 (Footnote 5로 축소된 후) · 본 §6 Footnote 2) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
   - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함, 다음 사용자 세션 입력 시 결정. 크리티컬 영향 자동 결정 금지 — §3 공통 의사결정 기준).
 - **본 PR 자체 grandfathered**: 발효일이 본 PR 최종 Phase 머지 commit이므로 자기 적용 회귀 없음. `file:line` 인용·`[verify:]` 태그·ATK 매핑표는 자발적 dogfooding.
-- **30일 freeze 권장**: 본 PR 머지 후 design-rule.md / harness-loop.md / privacy-by-design SKILL 추가 룰 변경 지양.
+- **30일 freeze 권장**: 본 PR 머지 후 design-stage SKILL / harness-loop.md / privacy-by-design SKILL 추가 룰 변경 지양.
 
 ### Footnote 3 — Subagent delegation hygiene advisory 묶음 (harness-task-lack-improve)
 
@@ -283,7 +283,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - 발동 0 → **auto-expire**: 룰 본문 5지점(§5.4 A2 / §5.4 E1 / §5.4 Privacy scrub / 본 §6 Footnote 3 / HARNESS_LEDGER_TEMPLATE.md `## Subagent Invocations` 섹션) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
   - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함, 다음 사용자 세션 입력 시 결정. 크리티컬 영향 자동 결정 금지 — §3 공통 의사결정 기준).
 - **본 PR 자체 grandfathered**: 발효일이 본 PR 머지 commit이므로 자기 적용 회귀 없음. 본 PR 작업의 위임은 자발적 dogfooding.
-- **30일 freeze 권장**: 본 PR 머지 후 design-rule.md / harness-entry SKILL / HARNESS_LEDGER_TEMPLATE.md 추가 룰 변경 지양 ("룰 9일 5회 변경" 안티패턴 재발 방지).
+- **30일 freeze 권장**: 본 PR 머지 후 design-stage SKILL / harness-entry SKILL / HARNESS_LEDGER_TEMPLATE.md 추가 룰 변경 지양 ("룰 9일 5회 변경" 안티패턴 재발 방지).
 
 ### Footnote 4 — Subagent delegation efficiency advisory 묶음 (harness-improve-v1)
 
@@ -298,7 +298,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - 발동 0 → **auto-expire**: 룰 본문 4지점(§3 의무 산출물 표 영향파일 행 G1 문구 / §5.4 G2 위임 방식 2분기 / harness-entry SKILL item 6·7 / 본 §6 Footnote 4) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
   - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함 — §3 크리티컬 영향 자동 결정 금지).
 - **본 PR 자체 grandfathered**: 발효일이 본 PR 머지 commit이므로 자기 적용 회귀 없음.
-- **30일 freeze 권장**: 본 PR 머지 후 design-rule.md / harness-entry SKILL 추가 룰 변경 지양.
+- **30일 freeze 권장**: 본 PR 머지 후 design-stage SKILL / harness-entry SKILL 추가 룰 변경 지양.
 - **출처**: `docs/harness/SUBAGENT_DELEGATION_GUIDE.md` §2·§3 비용 분석.
 
 ### Footnote 5 — Subagent dispatch policy advisory 묶음 (subagent-dispatch-tuning)
@@ -317,7 +317,7 @@ Stage 1·2 종료 시 다음을 강제한다.
   - 발동 0 → **auto-expire**: 룰 본문 6지점(§3 의무 산출물 표 Stage 2 행 3신규 필드 / §5.2 종료 게이트 advisory item 3 / §5.4 A1 / §5.4 A3 / §5.4 위임 단일 임계 문구 / 본 §6 Footnote 5) 수동 제거 + 검증 issue 수동 생성 (자동화 헬퍼 0).
   - **발동 ≥ 3 + escalate 부재 → 유보** (자동 판단 안 함 — §3 크리티컬 영향 자동 결정 금지).
 - **본 PR 자체 grandfathered**: 발효일이 본 PR 머지 commit이므로 자기 적용 회귀 없음. 본 s1 (`docs/spec/subagent-dispatch-tuning_s1.md`) 자체는 본 advisory 발효 전 작성이므로 신규 3필드 미적용도 정합.
-- **30일 freeze 권장** (advisory · 차단 게이트 아님): 본 PR 머지 후 design-rule.md / harness-entry SKILL / SUBAGENT_DELEGATION_GUIDE.md / post_edit_quality_gate.mjs 추가 룰 변경 지양.
+- **30일 freeze 권장** (advisory · 차단 게이트 아님): 본 PR 머지 후 design-stage SKILL / harness-entry SKILL / SUBAGENT_DELEGATION_GUIDE.md / post_edit_quality_gate.mjs 추가 룰 변경 지양.
 - **호환성**: §6 Footnote 4 G2(`mode: subagent` / `mode: main-batch` prefix) 와 본 G3의 mode 값(`main` / `subagent:T1/T2/T3`)은 의미적으로 후속 단계 — G3가 활성화되면 G2 prefix는 자연스럽게 superseded (auto-expire 시 일괄 제거).
 
 <!-- §6-UNFIRED-END -->

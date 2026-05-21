@@ -27,7 +27,7 @@ portability: portable
 
 ## Decision Log
 
-> Advisory 발동 태그 3종 (`[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`) 는 본 Decision Log 의 "결정" 또는 "이유" 컬럼에 인라인 기록 (design-rule.md §6 Footnote 2 — 측정 grep 대상).
+> Advisory 발동 태그 3종 (`[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`) 는 본 Decision Log 의 "결정" 또는 "이유" 컬럼에 인라인 기록 (design-stage SKILL §6 Footnote 2 — 측정 grep 대상).
 
 | # | 날짜 | Phase | 결정 | 이유 | 커밋 |
 |---|---|---|---|---|---|
@@ -51,7 +51,7 @@ portability: portable
 
 ## Subagent Invocations
 
-> design-rule.md §5.4 E1 (advisory §6 Footnote 3) — general-purpose 위임 완료 직후 1행 기입. Phase 종료/`/stage-end` 일괄 금지. 미수신값 = `unknown` 문자열 (skip/추정 금지). `task` 컬럼 Privacy scrub 룰 (design-rule §5.4) 준수. `status` = `DONE` / `PARTIAL` / `fallback-to-main` 중 하나.
+> design-stage SKILL §5.4 E1 (advisory §6 Footnote 3) — general-purpose 위임 완료 직후 1행 기입. Phase 종료/`/stage-end` 일괄 금지. 미수신값 = `unknown` 문자열 (skip/추정 금지). `task` 컬럼 Privacy scrub 룰 (design-stage SKILL §5.4) 준수. `status` = `DONE` / `PARTIAL` / `fallback-to-main` 중 하나.
 
 | Date | Phase | Agent ID | task | duration_ms | total_tokens | tool_uses | status |
 |---|---|---|---|---|---|---|---|

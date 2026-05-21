@@ -252,11 +252,11 @@ expectContains(
   "Harness self-maintenance mode",
 );
 expectContains(
-  "design-rule.md edit triggers self-maintenance checklist",
+  "design-stage SKILL edit triggers self-maintenance checklist",
   run(
     "post_harness_designrule",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: ".claude-context/design-rule.md", content: "## new section" } }),
+    j({ tool_input: { file_path: ".claude/skills/design-stage/SKILL.md", content: "## new section" } }),
   ),
   "Harness self-maintenance mode",
 );

@@ -32,7 +32,7 @@ Harness Project - Hany
 **Non-negotiables** (SessionStart hook이 매 세션 주입, 여기에도 명시): aggregate-only 입력 · 프라이버시 스크러버 · 라이프사이클 정리 · 영속 스키마/마이그레이션 증거+롤백 · loop budget (동일 실패 auto-fix 3회 / 무변경 rerun 2회 도달 시 stop & ask).
 
 ## Design Workflow
-복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/spec/{feat-name}_s{N}.md`.
+복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude/skills/design-stage/SKILL.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/spec/{feat-name}_s{N}.md`.
 
 **Harness 슬래시 커맨드**: `/harness-start {feat-name}` (Medium+ 피처 실행) · `/harness-maintain` (harness 자기 수정) · `/harness-loop` (GitHub 이슈 자율 워크 사이클, 사용자 명시 호출 한정).
 

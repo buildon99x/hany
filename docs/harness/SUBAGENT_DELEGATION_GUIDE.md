@@ -6,7 +6,7 @@ portability: portable
 # Subagent Delegation Guide — 효율 분석 및 권장 전략
 
 > 기준 데이터: `spec-doc-management` Phase A·B (2026-05-20)
-> 본 문서는 `design-rule.md §6 Footnote 4` (harness-improve-v1) 의 출처. 발효일: `<merge-commit-iso8601>` (미발효 — 머지 후 1줄 follow-up commit 으로 채움).
+> 본 문서는 `design-stage SKILL §6 Footnote 4` (harness-improve-v1) 의 출처. 발효일: `<merge-commit-iso8601>` (미발효 — 머지 후 1줄 follow-up commit 으로 채움).
 
 ---
 

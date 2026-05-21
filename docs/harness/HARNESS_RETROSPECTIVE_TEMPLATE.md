@@ -105,7 +105,7 @@ Effort Ledger 의 Phase 별 active turn time / 토큰 합계에서 임계 (시�
 |---|---|---|---|---|---|---|
 | | | | | | | |
 
-> "발동 태그" 컬럼: design-rule.md §6 Footnote 2 advisory 발동 태그 3종(`[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`) 중 해당 Phase 에서 기록된 항목 나열. 없으면 `—`.
+> "발동 태그" 컬럼: design-stage SKILL §6 Footnote 2 advisory 발동 태그 3종(`[s1-grep-trigger]` · `[verify-tag-trigger]` · `[privacy-surface-trigger]`) 중 해당 Phase 에서 기록된 항목 나열. 없으면 `—`.
 
 ---
 
