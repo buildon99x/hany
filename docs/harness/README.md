@@ -17,6 +17,7 @@ portability: project-specific
 | 처음 시스템 이해 | `HARNESS_PLAN.md` (정책 의도) |
 | 새 피처 작업 | `HARNESS_OPERATING_PLAYBOOK.md` (7단계 절차) |
 | Medium+ 피처 구현 | `/harness-start {feat-name}` → `.claude/skills/harness-entry/SKILL.md` |
+| GitHub 이슈 자율 처리 | `/harness-loop` → `.claude/commands/harness-loop.md` |
 | Harness 자체 수정 | `/harness-maintain` → `HARNESS_SELF_MAINTENANCE.md` |
 | 티어 분류 | `FEATURE_DIFFICULTY_TIERS.md` |
 | Claude Code 셋업 | `CLAUDE_CODE_HARNESS_APPLY.md` |

@@ -34,6 +34,8 @@ Harness Project - Hany
 ## Design Workflow
 복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/feat_{feat-name}_s{N}.md`.
 
+**Harness 슬래시 커맨드**: `/harness-start {feat-name}` (Medium+ 피처 실행) · `/harness-maintain` (harness 자기 수정) · `/harness-loop` (GitHub 이슈 자율 워크 사이클, 사용자 명시 호출 한정).
+
 ## Planning Rules (사용자 지침)
 - **계획(Plan)에 코드를 절대 포함하지 않는다.** 파일 경로, 수정 방향, 로직 설명만 서술. 코드는 구현 단계에서만.
 - 계획은 간결하게: 파일별 변경 사항을 1~2줄로 요약. 불필요한 반복 금지.
