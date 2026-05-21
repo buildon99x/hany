@@ -525,6 +525,75 @@ console.log("pre_tool_effort_collect");
     j({ tool_input: { command: 'git commit -m "Ledger: Phase A0B1 완료"' } }),
   );
   expectEmpty("4-char phase id matches pattern → noop (no ledger)", r7);
+
+  // Case 8 (positive, path migration): ledger at docs/spec/<name>_harness_ledger.md → hook finds and runs script.
+  // Case 9 (negative, regression guard): ledger only at docs/feat_*_harness_ledger.md (legacy) → hook does NOT find.
+  const { mkdtempSync, symlinkSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const setupTmpRepo = () => {
+    const dir = mkdtempSync(resolve(tmpdir(), "effort-path-"));
+    spawnSync("git", ["init", "-q", "-b", "main"], { cwd: dir });
+    spawnSync("git", ["config", "user.email", "t@t.t"], { cwd: dir });
+    spawnSync("git", ["config", "user.name", "t"], { cwd: dir });
+    spawnSync("git", ["config", "commit.gpgsign", "false"], { cwd: dir });
+    spawnSync("git", ["config", "gpg.format", "openpgp"], { cwd: dir });
+    spawnSync("git", ["commit", "-q", "--allow-empty", "--no-gpg-sign", "-m", "init"], { cwd: dir });
+    mkdirSync(resolve(dir, "scripts/lib"), { recursive: true });
+    symlinkSync(resolve(repoRoot, "scripts/harness-effort-collect.mjs"), resolve(dir, "scripts/harness-effort-collect.mjs"));
+    symlinkSync(resolve(repoRoot, "scripts/lib/transcript-adapter.mjs"), resolve(dir, "scripts/lib/transcript-adapter.mjs"));
+    symlinkSync(resolve(repoRoot, "scripts/lib/scrubber.mjs"), resolve(dir, "scripts/lib/scrubber.mjs"));
+    return dir;
+  };
+  const ledgerContent = "# x\n| 1 | A — test | 🔲 미시작 | — |\n<!-- effort:auto:begin -->\n<!-- effort:auto:end -->\n";
+  const commitCmd = j({ tool_input: { command: 'git commit -m "feat(x): Phase A\n\nLedger: Phase A 완료"' } });
+
+  // Case 8: docs/spec/ path → hook finds ledger.
+  {
+    const dir = setupTmpRepo();
+    mkdirSync(resolve(dir, "docs/spec"), { recursive: true });
+    const ledger = resolve(dir, "docs/spec/x_harness_ledger.md");
+    writeFileSync(ledger, ledgerContent);
+    const res = run(
+      "effort_hook_new_path",
+      [hooks("pre_tool_effort_collect.mjs")],
+      commitCmd,
+      { PIXEL_HORIZON_REPO_ROOT: dir, PIXEL_HORIZON_EFFORT_PROJECTS_DIR: resolve(dir, "noproj") },
+    );
+    const out = readFileSync(ledger, "utf8");
+    if (res.code === 0 && /\| A \| n\/a \|/.test(out)) {
+      passed++;
+      console.log("  ok  docs/spec/<name>_harness_ledger.md → hook finds and script populates n/a row");
+    } else {
+      failed++;
+      console.log("  FAIL docs/spec/ ledger not found by hook");
+      console.log(`       exit=${res.code} stderr=${res.stderr.slice(0, 200)} out=${out.slice(0, 200)}`);
+    }
+    rmSync(dir, { recursive: true, force: true });
+  }
+
+  // Case 9: legacy docs/feat_*_harness_ledger.md only → hook does NOT find (regression guard).
+  {
+    const dir = setupTmpRepo();
+    mkdirSync(resolve(dir, "docs"), { recursive: true });
+    const ledger = resolve(dir, "docs/feat_x_harness_ledger.md");
+    writeFileSync(ledger, ledgerContent);
+    const res = run(
+      "effort_hook_legacy_path",
+      [hooks("pre_tool_effort_collect.mjs")],
+      commitCmd,
+      { PIXEL_HORIZON_REPO_ROOT: dir, PIXEL_HORIZON_EFFORT_PROJECTS_DIR: resolve(dir, "noproj") },
+    );
+    const out = readFileSync(ledger, "utf8");
+    if (res.code === 0 && !/\| A \| n\/a \|/.test(out)) {
+      passed++;
+      console.log("  ok  legacy docs/feat_*_harness_ledger.md not matched (regression guard)");
+    } else {
+      failed++;
+      console.log("  FAIL legacy path incorrectly matched");
+      console.log(`       exit=${res.code} out=${out.slice(0, 200)}`);
+    }
+    rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 console.log("_emit helpers");
