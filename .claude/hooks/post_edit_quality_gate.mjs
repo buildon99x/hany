@@ -57,7 +57,7 @@ if (/(^|\/)docs\/spec\/.+_s2\.md$/i.test(filePath)) {
     "PostToolUse",
     "Harness Readiness Oracle — s2 저장 확인:\n" +
       "- 모든 Phase 블록에 6개 필드 완비 (전제조건/인수조건/루프예산/롤백/서브에이전트 스코프/에스컬레이트 조건)\n" +
-      "- 서브에이전트 스코프에 파일 목록 + 참조할 s1 섹션 명시\n" +
+      "- 서브에이전트 스코프: 파일 목록 + 참조할 s1 섹션 + (Footnote 5 G3, 신규 feature) mode (main/subagent:T1/T2/T3) + trigger 매칭 근거 + Hard Constraint 통과 증거 명시\n" +
       "- Review Response Protocol 섹션 포함 여부 확인\n" +
       "- Decision Ledger 초기화 준비 완료 여부 확인\n" +
       "- 누락 항목 확인 후 저장 완료 처리.",

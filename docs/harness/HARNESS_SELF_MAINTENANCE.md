@@ -66,7 +66,7 @@ portability: portable
 - [ ] 디렉토리형 (`*/SKILL.md`) ↔ 평면형 (`*.md`) 구조 일관성 유지. 신규 skill 은 디렉토리형 권장.
 - [ ] 프론트매터 `name`·`description` 누락 금지 — Claude Code 의 자동 발견에 필요.
 - [ ] SKILL 본문이 참조하는 외부 경로(`docs/harness/...`, `.claude-context/...`) 존재 확인.
-- [ ] skill 동작이 외부 IO (web fetch / MCP / 광역 grep) 를 유발하면 design-rule.md §5.4 위임 임계 OR 4중 안내.
+- [ ] skill 동작이 외부 IO (web fetch / MCP / 광역 grep) 를 유발하면 design-rule.md §5.4 위임 단일 임계 (≥50K char, Footnote 5로 OR 4중 축소) 안내.
 
 ### E. `.claude/commands/**` 편집
 
