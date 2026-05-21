@@ -31,7 +31,7 @@ Only aggregate activity signals are allowed:
 3. Confirm retention and deletion paths.
 4. Treat highly granular timelines as privacy-sensitive and require separate review.
 
-## 외부 출력 표면 9종 체크리스트 (advisory — design-rule.md §6 Footnote 2)
+## 외부 출력 표면 9종 체크리스트 (advisory — design-stage SKILL §6 Footnote 2)
 
 새로운 정보 생성·수정 시 다음 9개 출력 표면별로 privacy scrub 의무를 확인한다. 누락 시 ledger Decision Log에 `[privacy-surface-trigger]` 태그 기록.
 

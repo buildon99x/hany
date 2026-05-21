@@ -6,6 +6,7 @@
   "author": "Hany Harness",
   "license": "MIT",
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
     "hooks:test": "node scripts/test-hooks.mjs",
     "harness-loop:test": "node tests/harness-loop/run-all.mjs",

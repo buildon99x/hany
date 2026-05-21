@@ -85,7 +85,7 @@ GitHub MCP `search_issues` 로 `label:harness:*` 이슈 목록 조회 (`perPage 
 3. Fenced injection detection (감지 시 `needs-human` 추가)
 4. Image alt-text 정제
 5. URL allowlist 검증 (위반 URL → `[REDACTED]` 치환)
-6. **Fallback issue body** — 본문 sanitize 결과가 빈 문자열이거나 모든 단계가 실패한 경우 `[content unavailable — see harness ledger]` 기본 본문으로 교체 (privacy-by-design 외부 출력 표면 #6, advisory — design-rule.md §6 Footnote 2)
+6. **Fallback issue body** — 본문 sanitize 결과가 빈 문자열이거나 모든 단계가 실패한 경우 `[content unavailable — see harness ledger]` 기본 본문으로 교체 (privacy-by-design 외부 출력 표면 #6, advisory — design-stage SKILL §6 Footnote 2)
 
 ### 1-6. 이슈 발행 (GitHub MCP `issue_write`)
 
@@ -153,8 +153,8 @@ list 응답 본문 크기 > 1000자이면 `issue_read` 로 개별 조회.
 - `docs/spec/{feat-name}_s1.md` 존재 + Context Carry ≥2 결정
 - `docs/spec/{feat-name}_s2.md` 존재 + 모든 Phase 6필드 완비
 - Medium+ tier: ATK 의무 답변 (Medium = 2개, High = 4개)
-- **(advisory — design-rule.md §6 Footnote 2)** s1 §영향 파일 표 `file:line` 인용 grep — 누락 시 `[s1-grep-trigger]` 태그 ledger 기록 후 진행 (차단 아님)
-- **(advisory — design-rule.md §6 Footnote 2)** s2 Phase Contract 인수조건 줄 `[verify:]` 태그 grep — 누락 시 `[verify-tag-trigger]` 태그 ledger 기록 후 진행
+- **(advisory — design-stage SKILL §6 Footnote 2)** s1 §영향 파일 표 `file:line` 인용 grep — 누락 시 `[s1-grep-trigger]` 태그 ledger 기록 후 진행 (차단 아님)
+- **(advisory — design-stage SKILL §6 Footnote 2)** s2 Phase Contract 인수조건 줄 `[verify:]` 태그 grep — 누락 시 `[verify-tag-trigger]` 태그 ledger 기록 후 진행
 
 > 본 항목 4·5 는 `.claude/skills/harness-entry/SKILL.md` §Readiness Validation 의 advisory 항목 4·5 와 **단일 출처** — 본문·정규식 수정 시 양측 동기화 의무 (D5).
 
@@ -351,7 +351,7 @@ SLA 14일 무응답 → 자동 close + 다음 점검 이슈 발행 (C8).
 
 각 stage 작업은 sub-agent (general-purpose) 위임 — 메인 context = 회신 30줄 보존 (T-1).
 
-**(advisory — design-rule.md §6 Footnote 3)** general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용 (design-rule §5.4 참조). 누락 시 trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) ledger Decision Log 기록 후 진행.
+**(advisory — design-stage SKILL §6 Footnote 3)** general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용 (design-stage SKILL §5.4 참조). 누락 시 trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) ledger Decision Log 기록 후 진행.
 
 ### §10-3 Branch / Commit
 

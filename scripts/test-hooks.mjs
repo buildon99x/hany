@@ -252,11 +252,11 @@ expectContains(
   "Harness self-maintenance mode",
 );
 expectContains(
-  "design-rule.md edit triggers self-maintenance checklist",
+  "design-stage SKILL edit triggers self-maintenance checklist",
   run(
     "post_harness_designrule",
     [hooks("post_edit_quality_gate.mjs")],
-    j({ tool_input: { file_path: ".claude-context/design-rule.md", content: "## new section" } }),
+    j({ tool_input: { file_path: ".claude/skills/design-stage/SKILL.md", content: "## new section" } }),
   ),
   "Harness self-maintenance mode",
 );
@@ -286,6 +286,14 @@ expectContains(
     j({ tool_input: { file_path: "docs/harness/HARNESS_OPERATING_PLAYBOOK.md", content: "## update" } }),
   ),
   "Harness self-maintenance mode",
+);
+expectEmpty(
+  "retired .claude-context/ prefix no longer triggers self-maintenance",
+  run(
+    "post_retired_claudecontext",
+    [hooks("post_edit_quality_gate.mjs")],
+    j({ tool_input: { file_path: ".claude-context/legacy.md", content: "noop" } }),
+  ),
 );
 expectEmpty(
   "regular src/ edit does not trigger self-maintenance",

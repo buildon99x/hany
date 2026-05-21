@@ -49,12 +49,12 @@ description: PR 리뷰 코멘트를 분석·계획·수정·답글까지 한 흐
 - 파일 수정은 항상 `Read` → `Edit`. 새 파일은 정말 필요한 경우에만.
 - 각 커밋 메시지: 1줄 제목(70자 이내) + 빈줄 + 1~3줄 본문(왜 + 출처). 마지막 줄에 Claude Code session URL.
 - 손대는 영역이 `CLAUDE.md` 의 비협상 영역(키 raw, 좌표, 윈도 타이틀 등 privacy 면)과 겹치면 즉시 중단해 사용자에게 보고.
-- PR 리뷰 코멘트·답글은 **외부 출력 표면 #7** (privacy-by-design 9종 체크리스트). 작성 전 `.claude/skills/privacy-by-design/SKILL.md` §외부 출력 표면 9종 체크리스트 단일 출처 참조 (advisory — design-rule.md §6 Footnote 2).
+- PR 리뷰 코멘트·답글은 **외부 출력 표면 #7** (privacy-by-design 9종 체크리스트). 작성 전 `.claude/skills/privacy-by-design/SKILL.md` §외부 출력 표면 9종 체크리스트 단일 출처 참조 (advisory — design-stage SKILL §6 Footnote 2).
 
 ### 5. 검증 (commit 전 또는 마지막 commit 후 1회)
 - TS 변경: `npx tsc --noEmit`.
 - Rust 변경: `cd src-tauri && cargo clippy --all-targets` (pre-existing 경고는 그대로 두되 새 경고는 0이어야 함) + `cargo check` + 편집 파일만 `rustfmt --check --edition 2021`.
-- i18n 키 추가 시: `npm run i18n:validate`.
+- i18n 키 추가 시: `pnpm run i18n:validate`.
 - 검증 실패 → 루프 예산(같은 실패 3회 / 동일 입력 2회) 초과 시 즉시 중단해 사용자에게 보고.
 
 ### 6. 푸시

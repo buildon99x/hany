@@ -118,10 +118,10 @@ Stop and ask for user direction when:
 - A gate cannot explain whether the failure is product behavior, harness drift, or environment variance.
 - Scope Discovery found a dependency that does not match any Context Carry rejection reason — record in Escalation Log and ask user before continuing.
 
-## Subagent Delegation (advisory — design-rule.md §6 Footnote 3)
-general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용. 세부는 `.claude-context/design-rule.md` §5.4 참조. 30일 advisory · 차단 아님 · trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) 으로 발동 카운트.
+## Subagent Delegation (advisory — design-stage SKILL §6 Footnote 3)
+general-purpose 위임 시 A2 Self-verify footer + E1 ledger `## Subagent Invocations` 1행 기입 + Privacy scrub 룰 적용. 세부는 `.claude/skills/design-stage/SKILL.md` §5.4 참조. 30일 advisory · 차단 아님 · trigger 태그 3종 (`[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]`) 으로 발동 카운트.
 
-## Delegation Efficiency (advisory — design-rule.md §6 Footnote 4)
+## Delegation Efficiency (advisory — design-stage SKILL §6 Footnote 4)
 s1 §영향 파일 표 작성 전 `grep -rl '<대상 패턴>'` 실행 → 결과 인용 권장 (`[pre-grep-trigger]`). s2 Phase Contract 서브에이전트 스코프 첫 줄에 `mode: subagent` / `mode: main-batch` 명시 권장 (`[delegation-mode-trigger]`). **후속 (Footnote 5 G3, subagent-dispatch-tuning 제안 2)**: mode 값을 `main` / `subagent:T1/T2/T3`로 세분화 + trigger 매칭 근거·Hard Constraint 통과 증거 3신규 필드 — G3 발효 시 본 G2 prefix는 superseded. Medium+ 적용 · Low 면제 · 30일 advisory · 차단 아님.
 
 ## Done Definition
