@@ -6,8 +6,8 @@ import { getRequiredDocs, getStrictMode } from "./_config.mjs";
 const requiredDocs = getRequiredDocs([
   "docs/harness/HARNESS_OPERATING_PLAYBOOK.md",
   "docs/harness/FEATURE_DIFFICULTY_TIERS.md",
-  "docs/harness/QUALITY_GATE_MATRIX.md",
-  "docs/harness/FEATURE_QUALITY_NOTE_TEMPLATE.md",
+  "docs/harness/PHASE_TEMPLATE.md",
+  "docs/harness/HANDOFF_TEMPLATE.md",
   "docs/harness/FEATURE_REVIEW_CHECKLIST.md",
 ]);
 

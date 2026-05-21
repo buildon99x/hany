@@ -9,7 +9,7 @@ This project includes a Claude Code-ready harness configuration in `.claude/`.
 
 ## What Is Installed
 - `.claude/settings.json`: project hooks for session context, prompt context, privacy guard, command guard, post-edit quality reminders, stop checks, pre-compact context, subagent handoff, Phase commit effort collection, harness-loop cost tracking, and worktree node_modules linking.
-- `.claude/skills/`: project skills that Claude Code can discover and invoke. All skills use **directory form** (`*/SKILL.md`) with frontmatter `name`/`description`: `design-stage`, `desktop-resident-stability`, `feature-quality-gate`, `frontend-design`, `harness-entry`, `harness-workflow-control`, `learn-record`, `pr-pruner`, `pr-review-fix`, `privacy-by-design`, `simulate-user`, `test-harness-author`, `ux-review`.
+- `.claude/skills/`: project skills that Claude Code can discover and invoke. All skills use **directory form** (`*/SKILL.md`) with frontmatter `name`/`description`: `design-stage`, `desktop-resident-stability`, `feature-quality-gate`, `harness-entry`, `harness-loop`, `harness-workflow-control`, `learn-record`, `pr-pruner`, `pr-review-fix`, `privacy-by-design`, `test-harness-author`.
 - `.claude/hooks/*.mjs`: Node.js hook scripts. Cross-platform (Windows / macOS / Linux). Node is already a project dependency.
 
 ## Requirements

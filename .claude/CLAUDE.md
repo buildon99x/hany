@@ -8,16 +8,8 @@ Harness Project - Hany
 - **모든 파일은 UTF-8 (BOM 없음)으로 저장한다.** 편집기·도구 설정과 무관하게, 새 파일 생성 및 기존 파일 수정 시 인코딩을 UTF-8로 유지한다.
 
 ## Commands
-- `npm run tauri build [-- --no-bundle]` — production build
-- `npm run typecheck` / `npx tsc --noEmit`
-- `npm test` / `npm run test:watch` — Vitest
-- `npm run lint` / `npm run lint:all` runs both.
-
 - `npm run hooks:test` — runs harness-hook cases. Must stay green before any hook/settings change.
-- `npm run release:bump` / `npm run release:local` — local release flow (see `release-local` / `release-tag` skills).
-
-
-
+- `npm run harness:effort -- --ledger <path> --phase <key> --branch <name>` — manual Effort Ledger row append (fallback for PreToolUse hook).
 
 ### TypeScript
 - `strict: true`, `noUnusedLocals`, `noUnusedParameters`. Remove unused imports.
@@ -41,6 +33,8 @@ Harness Project - Hany
 
 ## Design Workflow
 복잡 기능은 Stage 0 (아이데이션) → 1 (기능 설계) → 2 (구현 계획). 규칙 원본 `.claude-context/design-rule.md`. 트리거 `/stage-start {N} [feat-name]` · `/stage-end {N}`. 산출물 `docs/spec/{feat-name}_s{N}.md`.
+
+**Harness 슬래시 커맨드**: `/harness-start {feat-name}` (Medium+ 피처 실행) · `/harness-maintain` (harness 자기 수정) · `/harness-loop` (GitHub 이슈 자율 워크 사이클, 사용자 명시 호출 한정).
 
 ## Planning Rules (사용자 지침)
 - **계획(Plan)에 코드를 절대 포함하지 않는다.** 파일 경로, 수정 방향, 로직 설명만 서술. 코드는 구현 단계에서만.
