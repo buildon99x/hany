@@ -63,9 +63,10 @@ When starting a new feature, Claude Code should:
 
 | Footnote | 게이트 | 발동 태그 | Tier |
 |---|---|---|---|
-| Footnote 2 | C1~C6: ATK 매핑표·`file:line` 인용·`[verify:]` 태그·위임 임계 OR 4중·harness-entry grep·privacy 체크리스트 | `[s1-grep-trigger]` / `[verify-tag-trigger]` / `[privacy-surface-trigger]` | Medium+ |
+| Footnote 2 | C1~C6: ATK 매핑표·`file:line` 인용·`[verify:]` 태그·위임 단일 임계 (Footnote 5로 OR 4중 → 단일 축소)·harness-entry grep·privacy 체크리스트 | `[s1-grep-trigger]` / `[verify-tag-trigger]` / `[privacy-surface-trigger]` | Medium+ |
 | Footnote 3 | A2 Self-verify footer·E1 Subagent Invocations 1행·Privacy scrub | `[subagent-verify-trigger]` / `[subagent-metrics-trigger]` / `[subagent-privacy-trigger]` | All tier |
-| Footnote 4 | G1 영향 파일 표 작성 전 `grep -rl` 결과 인용·G2 Phase Contract `mode: subagent\|main-batch` 명시 | `[pre-grep-trigger]` / `[delegation-mode-trigger]` | Medium+ |
+| Footnote 4 | G1 영향 파일 표 작성 전 `grep -rl` 결과 인용·G2 Phase Contract `mode: subagent\|main-batch` 명시 (Footnote 5 G3로 superseded 예정) | `[pre-grep-trigger]` / `[delegation-mode-trigger]` | Medium+ |
+| Footnote 5 | A1 Task Prompt 4섹션(Role/Authority/Inputs/Output)·A3 통합 검토 단계·G3 s2 Phase Contract 서브에이전트 스코프 3신규 필드(mode/trigger 매칭 근거/Hard Constraint 통과 증거) + 본문 완화: §5.4 위임 OR 4중 → 단일 임계 (≥50K char) | `[subagent-authority-trigger]` / `[subagent-review-trigger]` / `[subagent-dispatch-trigger]` | Medium+ |
 
 모든 Footnote 는 placeholder 미발효 상태 (30일 advisory, 차단 아님). 세부는 `.claude-context/design-rule.md` §6 참조.
 
